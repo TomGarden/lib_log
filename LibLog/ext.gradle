@@ -1,5 +1,0 @@
-ext{
-    moduleVersionCode = 2
-    moduleVersionName = '0.1.1'
-    moduleName = 'LibLog'
-}

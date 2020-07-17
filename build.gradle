@@ -18,7 +18,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://maven.pkg.github.com/TomGarden/lib_log" }
     }
 }
 

@@ -1,10 +1,14 @@
 /*
-本文内容参考资料: https://docs.github.com/cn/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages
-*/
+上传到公共组件库  https://github.com/TomGarden/TomAndroidLibs
+而不是上传到本代码所在的代码仓库
+
+要想手动发布就去执行 bintrayUpload.sh
+Github Actions 工作流暂未完成
+* */
 
 ext {
     moduleVersionCode = 2
-    moduleVersionName = '0.1.6'
+    moduleVersionName = '0.1.7'
     moduleName = 'LibLog'
 
     mavenGroupId = 'io.github.tomgarden'
@@ -47,3 +51,11 @@ publishing {
 //    println(System.getenv("PUBLISH_LIB_TO_GITHUB_PACKAGES_TOKEN"))
 //    println("$buildDir/outputs/aar/LibLog-release.aar")
 //}
+
+//在 project 执行命令, 即可完成上传
+//分步执行
+//../gradlew clean
+//../gradlew build
+//../gradlew publish
+//一次执行所有
+//./gradlew clean build publish
