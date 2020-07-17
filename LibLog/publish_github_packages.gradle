@@ -34,6 +34,19 @@ publishing {
     }
 
     repositories {
+        //如果失败了 一个一个上传即可
+
+        //上传到 maven center
+        maven {
+            name = moduleName
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+
+        //上传到 Github Packages
         maven {
             name = moduleName
             url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
