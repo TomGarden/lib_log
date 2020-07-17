@@ -1,0 +1,49 @@
+/*
+本文内容参考资料: https://docs.github.com/cn/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages
+*/
+
+ext {
+    moduleVersionCode = 2
+    moduleVersionName = '0.1.6'
+    moduleName = 'LibLog'
+
+    mavenGroupId = 'io.github.tomgarden'
+}
+
+task androidSourcesJar(type: Jar) {
+    /*生成 sources.jar 应对生成的 aar 跳转代码无法阅读的问题*/
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+publishing {
+
+    publications {
+        gpr(MavenPublication) {
+            groupId mavenGroupId
+            artifactId moduleName
+            version moduleVersionName
+            artifact("$buildDir/outputs/aar/$moduleName-release.aar")
+            // 将 generateSourcesJar Task 生成的 sources.jar 也一并上传
+            artifact(androidSourcesJar)
+        }
+    }
+
+    repositories {
+        maven {
+            name = moduleName
+            url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
+            credentials {
+                username = project.findProperty("gpr.user") ?: "TomgGrden"
+                password = project.findProperty("gpr.key") ?: System.getenv("PUBLISH_LIB_TO_GITHUB_PACKAGES_TOKEN")
+            }
+        }
+    }
+}
+
+
+//task testTask {
+//    //测试 gradle 语法
+//    println(System.getenv("PUBLISH_LIB_TO_GITHUB_PACKAGES_TOKEN"))
+//    println("$buildDir/outputs/aar/LibLog-release.aar")
+//}

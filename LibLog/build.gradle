@@ -1,9 +1,12 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'maven-publish'
+}
 
-apply from: './ext.gradle'
-//apply from: './bintray.release.gradle'
+
+apply from: 'publish_github_packages.gradle'
 
 android {
     compileSdkVersion 29
