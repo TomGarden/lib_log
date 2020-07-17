@@ -16,6 +16,9 @@
 
 ## 我认为事情应该是这样的
 
+定义一个全局参数控制日志是否不做区分全部写入本地文件
+DiskAdapter 无论全局参数如何定义都会将日志写入本地文件
+
 DefTerminalAdapter
 
 TemporaryTerminalAdapter
@@ -72,8 +75,9 @@ try{
 ```
 
 ## 进度暂存
-empty
-日志位置应该随时可以通过工具调取
+1. 日志位置应该随时可以通过工具调取
+2. [通过 github packages 发布远程包](https://docs.github.com/cn/packages/publishing-and-managing-packages)
+
 
 
 
