@@ -43,16 +43,14 @@ dependencies {
     //implementation project(path: ':LibLog')
     implementation 'io.github.tomgarden:LibLog:0.1.7'
 }
+
 repositories {
-
-    ext { read_packages_token = '5110b72e46015114b387fbe968629aa72c394171' }
-
     maven {
         name = "LibLog"
         url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
         credentials {
             username = "TomgGrden"
-            password = read_packages_token
+            password = System.getenv("PUBLISH_LIB_TO_GITHUB_PACKAGES_TOKEN")
         }
     }
 }
