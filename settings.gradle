@@ -1,4 +1,3 @@
 include ':ExampleLog'
 include ':LibLog'
-include ':app'
 rootProject.name = "lib_log"
