@@ -111,14 +111,18 @@ repositories {
         name = "LibLog"
         url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
         credentials {
-            username = "TomgGrden"
-            password = System.getenv("PUBLISH_LIB_TO_GITHUB_PACKAGES_TOKEN")
+            //下载者的 github 用户名
+            username = System.getenv("TOMGARADEN_USERNAME")
+            //下载者的 Github 中创建的具有 read:packages 权限的 token 即可
+            password = System.getenv("TOMGARADEN_READ_PACKAGES_TOKEN")
         }
     }
 }
 ```
 
 编译运行即可使用了
+
+仍需测试 : 关于使用 github token 下载依赖的情况还需要考虑如果一个人发布了多个组件库应该如何完成这个依赖动作
 
 
 
@@ -132,9 +136,17 @@ repositories {
 5. 可能是因为与仓库地址相关 , 所以上传的过程中报 402
 
 
-## 0x05. 上传到 Maven Center
+## 0x05. 上传到 Maven Central
+
+
 我们按照 https://juejin.im/post/5c3bddeff265da616501c56b 的操作指导(没有上传公钥) ,
 完成了操作 , 并且上传成功了 , 但是在 maven center 搜索不到自己上传的 lib 文件
 还需要跟进
 
-看看等等怎么样
+看看等等怎么样 :
+- jira 问题地址 : https://issues.sonatype.org/browse/OSSRH-59251
+- 仓库地址 : https://oss.sonatype.org/#stagingRepositories
+
+
+### 5.1. 参考内容
+1. https://www.jianshu.com/p/67d81977b027
