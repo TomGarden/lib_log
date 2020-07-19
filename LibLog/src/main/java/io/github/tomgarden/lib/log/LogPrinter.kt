@@ -21,43 +21,45 @@ internal class LogPrinter : Printer {
      */
     private val JSON_INDENT = 2
 
-    /**
-     * Provides one-time used tag for the log message
-     */
-    //private val localTag = ThreadLocal<String>()
-
     override var defLogcatStrategy: LogStrategy? = LogcatLogStrategy.newBuilder().build()
     override var temporaryLogcatStrategy: LogStrategy? = null
     override var defDiskStrategy: LogStrategy? = null
     override var temporaryDiskStrategy: LogStrategy? = null
 
-    override fun unNullTemporaryLogcatStrategy(): LogStrategy? {
-        temporaryLogcatStrategy ?: let {
-            defLogcatStrategy?.let {
-                temporaryLogcatStrategy = LogcatLogStrategy.newBuilder()
+    override fun unNullTemporaryLogcatStrategy(): LogStrategy {
+        val logStrategy =
+            temporaryLogcatStrategy ?: let {
+                defLogcatStrategy?.let {
+                    LogcatLogStrategy.newBuilder()
                         .methodCount(it.methodCount)
                         .methodOffset(it.methodOffset)
                         .showThreadInfo(it.showThreadInfo)
                         .tag(it.tag)
                         .build()
-            } ?: LogcatLogStrategy.newBuilder().build()
-        }
+                } ?: let { LogcatLogStrategy.newBuilder().build() }
+            }
 
-        return temporaryLogcatStrategy
+        temporaryLogcatStrategy = logStrategy
+
+        return logStrategy
     }
 
-    override fun unNullTemporaryDiskStrategy(): LogStrategy? {
-        temporaryDiskStrategy ?: let {
-            defDiskStrategy?.let {
-                temporaryDiskStrategy = LogcatLogStrategy.newBuilder()
+    override fun unNullTemporaryDiskStrategy(): LogStrategy {
+        val logStrategy =
+            temporaryDiskStrategy ?: let {
+                defDiskStrategy?.let {
+                    DiskLogTxtStrategy.newBuilder()
                         .methodCount(it.methodCount)
                         .methodOffset(it.methodOffset)
                         .showThreadInfo(it.showThreadInfo)
                         .tag(it.tag)
                         .build()
-            } ?: DiskLogTxtStrategy.newBuilder().build()
-        }
-        return temporaryDiskStrategy
+                } ?: DiskLogTxtStrategy.newBuilder().build()
+            }
+
+        temporaryDiskStrategy = logStrategy
+
+        return logStrategy
     }
 
     override fun d(message: String?, vararg args: Any) {
@@ -76,7 +78,12 @@ internal class LogPrinter : Printer {
         log(ERROR, null, false, message, *args, false)
     }
 
-    override fun e(throwable: Throwable?, withSingleFile: Boolean, message: String?, vararg args: Any) {
+    override fun e(
+        throwable: Throwable?,
+        withSingleFile: Boolean,
+        message: String?,
+        vararg args: Any
+    ) {
         log(ERROR, throwable, withSingleFile, message, *args)
     }
 
@@ -139,10 +146,12 @@ internal class LogPrinter : Printer {
 
     }
 
-    private fun strategyLog(logStrategy: LogStrategy?,
-                            priority: Int,
-                            message: String,
-                            withSingleFile: Boolean) {
+    private fun strategyLog(
+        logStrategy: LogStrategy?,
+        priority: Int,
+        message: String,
+        withSingleFile: Boolean
+    ) {
         logStrategy?.let {
             if (logStrategy.isLoggable(priority, logStrategy.tag)) {
                 logStrategy.log(priority, message, withSingleFile)
@@ -158,35 +167,34 @@ internal class LogPrinter : Printer {
      * @param throwable Throwable?
      */
     @Synchronized
-    override fun log(priority: Int,
-                     message: String?,
-                     throwable: Throwable?,
-                     withSingleFile: Boolean) {
-        var msg: String = ""
-
-        throwable?.let {
-            message?.let {
-                msg = message + " : " + Utils.getStackTraceString(throwable)
+    override fun log(
+        priority: Int,
+        message: String?,
+        throwable: Throwable?,
+        withSingleFile: Boolean
+    ) {
+        val msg: String =
+            throwable?.let {
+                message?.let {
+                    message + " : " + Utils.getStackTraceString(throwable)
+                } ?: let {
+                    Utils.getStackTraceString(throwable)
+                }
             } ?: let {
-                msg = Utils.getStackTraceString(throwable)
+                message?.let {
+                    message
+                } ?: let {
+                    "Empty/NULL log msg"
+                }
             }
-        } ?: let {
-            message?.let {
-                msg = message
-            } ?: let {
-                msg = "Empty/NULL log msg"
-            }
-        }
 
-        temporaryLogcatStrategy?.let {
-            strategyLog(temporaryLogcatStrategy, priority, msg, withSingleFile)
-            temporaryLogcatStrategy = null
-        } ?: strategyLog(defLogcatStrategy, priority, msg, withSingleFile)
+        val logcatStrategy = temporaryLogcatStrategy ?: defLogcatStrategy
+        temporaryLogcatStrategy = null/*临时策略只发挥一次作用 , 用完即清空*/
+        strategyLog(logcatStrategy, priority, msg, withSingleFile)
 
-        temporaryDiskStrategy?.let {
-            strategyLog(temporaryDiskStrategy, priority, msg, withSingleFile)
-            temporaryDiskStrategy = null
-        } ?: strategyLog(defDiskStrategy, priority, msg, withSingleFile)
+        val diskStrategy = temporaryDiskStrategy ?: defDiskStrategy
+        temporaryDiskStrategy = null/*临时策略只发挥一次作用 , 用完即清空*/
+        strategyLog(diskStrategy, priority, msg, withSingleFile)
 
     }
 
@@ -201,11 +209,13 @@ internal class LogPrinter : Printer {
      * This method is synchronized in order to avoid messy of logs' order.
      */
     @Synchronized
-    private fun log(priority: Int,
-                    throwable: Throwable?,
-                    withSingleFile: Boolean,
-                    msg: String?,
-                    vararg args: Any) {
+    private fun log(
+        priority: Int,
+        throwable: Throwable?,
+        withSingleFile: Boolean,
+        msg: String?,
+        vararg args: Any
+    ) {
 
         val message = createMessage(msg, *args)
         log(priority, message, throwable, withSingleFile)

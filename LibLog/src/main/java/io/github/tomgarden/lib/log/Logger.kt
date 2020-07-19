@@ -67,10 +67,7 @@ object Logger {
     val ERROR = 6
     val ASSERT = 7
 
-    private var printer: Printer = LogPrinter()
-        set(value) {
-            field = value
-        }
+    var printer: Printer = LogPrinter()
 
     fun clearLogStrategies() {
         printer.clearLogStrategies()
@@ -83,15 +80,19 @@ object Logger {
         printer.defDiskStrategy = defDiskStrategy
     }
 
-    fun defDiskMethodCount(methodCount: Int): Logger = setMethodCount(printer.defDiskStrategy, methodCount)
+    fun defDiskMethodCount(methodCount: Int): Logger =
+        setMethodCount(printer.defDiskStrategy, methodCount)
 
-    fun defDiskMethodOffset(methodOffset: Int): Logger = setMethodOffset(printer.defDiskStrategy, methodOffset)
+    fun defDiskMethodOffset(methodOffset: Int): Logger =
+        setMethodOffset(printer.defDiskStrategy, methodOffset)
 
-    fun defDiskShowThreadInfo(showThreadInfo: Boolean): Logger = setShowThreadInfo(printer.defDiskStrategy, showThreadInfo)
+    fun defDiskShowThreadInfo(showThreadInfo: Boolean): Logger =
+        setShowThreadInfo(printer.defDiskStrategy, showThreadInfo)
 
     fun defDiskTag(tag: String): Logger = setTag(printer.defDiskStrategy, tag)
 
-    fun defDiskIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger = setIsLoggable(printer.defDiskStrategy, isLoggable)
+    fun defDiskIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger =
+        setIsLoggable(printer.defDiskStrategy, isLoggable)
     //endregion default disk
 
     //region temporary disk
@@ -101,15 +102,19 @@ object Logger {
         printer.temporaryDiskStrategy = temporaryDiskStrategy
     }
 
-    fun temporaryDiskMethodCount(methodCount: Int): Logger = setMethodCount(printer.unNullTemporaryDiskStrategy(), methodCount)
+    fun temporaryDiskMethodCount(methodCount: Int): Logger =
+        setMethodCount(printer.unNullTemporaryDiskStrategy(), methodCount)
 
-    fun temporaryDiskMethodOffset(methodOffset: Int): Logger = setMethodOffset(printer.unNullTemporaryDiskStrategy(), methodOffset)
+    fun temporaryDiskMethodOffset(methodOffset: Int): Logger =
+        setMethodOffset(printer.unNullTemporaryDiskStrategy(), methodOffset)
 
-    fun temporaryDiskShowThreadInfo(showThreadInfo: Boolean): Logger = setShowThreadInfo(printer.unNullTemporaryDiskStrategy(), showThreadInfo)
+    fun temporaryDiskShowThreadInfo(showThreadInfo: Boolean): Logger =
+        setShowThreadInfo(printer.unNullTemporaryDiskStrategy(), showThreadInfo)
 
     fun temporaryDiskTag(tag: String): Logger = setTag(printer.unNullTemporaryDiskStrategy(), tag)
 
-    fun temporaryDiskIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger = setIsLoggable(printer.unNullTemporaryDiskStrategy(), isLoggable)
+    fun temporaryDiskIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger =
+        setIsLoggable(printer.unNullTemporaryDiskStrategy(), isLoggable)
     //endregion temporary disk
 
     //region default logcat
@@ -120,15 +125,19 @@ object Logger {
         return this
     }
 
-    fun defLogcatMethodCount(methodCount: Int): Logger = setMethodCount(printer.defLogcatStrategy, methodCount)
+    fun defLogcatMethodCount(methodCount: Int): Logger =
+        setMethodCount(printer.defLogcatStrategy, methodCount)
 
-    fun defLogcatMethodOffset(methodOffset: Int): Logger = setMethodOffset(printer.defLogcatStrategy, methodOffset)
+    fun defLogcatMethodOffset(methodOffset: Int): Logger =
+        setMethodOffset(printer.defLogcatStrategy, methodOffset)
 
-    fun defLogcatShowThreadInfo(showThreadInfo: Boolean): Logger = setShowThreadInfo(printer.defLogcatStrategy, showThreadInfo)
+    fun defLogcatShowThreadInfo(showThreadInfo: Boolean): Logger =
+        setShowThreadInfo(printer.defLogcatStrategy, showThreadInfo)
 
     fun defLogcatTag(tag: String): Logger = setTag(printer.defLogcatStrategy, tag)
 
-    fun defLogcatIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger = setIsLoggable(printer.defLogcatStrategy, isLoggable)
+    fun defLogcatIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger =
+        setIsLoggable(printer.defLogcatStrategy, isLoggable)
     //endregion default logcat
 
     //region temporary logcat
@@ -139,15 +148,20 @@ object Logger {
         return this
     }
 
-    fun temporaryLogcatMethodCount(methodCount: Int): Logger = setMethodCount(printer.unNullTemporaryLogcatStrategy(), methodCount)
+    fun temporaryLogcatMethodCount(methodCount: Int): Logger =
+        setMethodCount(printer.unNullTemporaryLogcatStrategy(), methodCount)
 
-    fun temporaryLogcatMethodOffset(methodOffset: Int): Logger = setMethodOffset(printer.unNullTemporaryLogcatStrategy(), methodOffset)
+    fun temporaryLogcatMethodOffset(methodOffset: Int): Logger =
+        setMethodOffset(printer.unNullTemporaryLogcatStrategy(), methodOffset)
 
-    fun temporaryLogcatShowThreadInfo(showThreadInfo: Boolean): Logger = setShowThreadInfo(printer.unNullTemporaryLogcatStrategy(), showThreadInfo)
+    fun temporaryLogcatShowThreadInfo(showThreadInfo: Boolean): Logger =
+        setShowThreadInfo(printer.unNullTemporaryLogcatStrategy(), showThreadInfo)
 
-    fun temporaryLogcatTag(tag: String): Logger = setTag(printer.unNullTemporaryLogcatStrategy(), tag)
+    fun temporaryLogcatTag(tag: String): Logger =
+        setTag(printer.unNullTemporaryLogcatStrategy(), tag)
 
-    fun temporaryLogcatIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger = setIsLoggable(printer.unNullTemporaryLogcatStrategy(), isLoggable)
+    fun temporaryLogcatIsLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger =
+        setIsLoggable(printer.unNullTemporaryLogcatStrategy(), isLoggable)
 
     fun temporaryJustMsg(): Logger {
         return temporaryLogcatShowThreadInfo(false)
@@ -180,14 +194,20 @@ object Logger {
         return this
     }
 
-    private fun setIsLoggable(logStrategy: LogStrategy?, isLoggable: ((priority: Int, tag: String) -> Boolean)): Logger {
+    private fun setIsLoggable(
+        logStrategy: LogStrategy?,
+        isLoggable: ((priority: Int, tag: String) -> Boolean)
+    ): Logger {
         logStrategy?.isLoggable = isLoggable
         logStrategy ?: nullPointLog()
         return this
     }
 
     private fun nullPointLog() {
-        getTemporaryLogcatStrategy()?.log(ERROR, "Null point exception, 'Logger.setXxx(..)' is failed")
+        getTemporaryLogcatStrategy()?.log(
+            ERROR,
+            "Null point exception, 'Logger.setXxx(..)' is failed"
+        )
     }
     //endregion set logStrategy
 
@@ -274,8 +294,14 @@ object Logger {
      * @param fileExtend String             文件扩真名
      * @param operate Function1<File, Unit> 对这个文件的操作
      */
-    fun getFiles(folderPath: String, fileName: String, fileExtend: String, operate: ((File) -> Unit)) {
-        Utils.getFiles(folderPath, fileName, fileExtend).forEach { logFile -> operate.invoke(logFile) }
+    fun getFiles(
+        folderPath: String,
+        fileName: String,
+        fileExtend: String,
+        operate: ((File) -> Unit)
+    ) {
+        Utils.getFiles(folderPath, fileName, fileExtend)
+            .forEach { logFile -> operate.invoke(logFile) }
     }
 
     fun getLogFiles(fileName: String, fileExtend: String): MutableList<File> {

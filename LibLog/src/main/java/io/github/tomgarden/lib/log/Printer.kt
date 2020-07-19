@@ -11,14 +11,18 @@ package io.github.tomgarden.lib.log
  */
 interface Printer {
 
+  /*默认控制台日志策略*/
   var defLogcatStrategy: LogStrategy?
+  /*临时控制台日志策略*/
   var temporaryLogcatStrategy: LogStrategy?
+  /*默认磁盘日志策略*/
   var defDiskStrategy: LogStrategy?
+  /*临时磁盘日志策略*/
   var temporaryDiskStrategy: LogStrategy?
 
-  fun unNullTemporaryLogcatStrategy(): LogStrategy?
+  fun unNullTemporaryLogcatStrategy(): LogStrategy
 
-  fun unNullTemporaryDiskStrategy(): LogStrategy?
+  fun unNullTemporaryDiskStrategy(): LogStrategy
 
   fun d(message: String?, vararg args: Any)
 
