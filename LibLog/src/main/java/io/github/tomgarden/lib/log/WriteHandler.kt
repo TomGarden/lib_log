@@ -3,6 +3,7 @@ package io.github.tomgarden.lib.log
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 
 /**
  * describe : null
@@ -13,6 +14,7 @@ import android.os.Message
  */
 class WriteHandler(looper: Looper) : Handler(looper) {
 
+    private val TAG = "io.github.tomgarden"
 
     companion object {
         val contentKey: String = "CONTENT"
@@ -29,7 +31,11 @@ class WriteHandler(looper: Looper) : Handler(looper) {
     override fun handleMessage(msg: Message) {
         val content = msg.data.getString(contentKey) ?: "null"
         val folderPath = msg.data.getString(folderPathKey)
-        if (folderPath.isNullOrEmpty()) return
+        if (folderPath.isNullOrEmpty()) {
+            Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+                .e("invalid log file path")
+            return
+        }
         val maxFileSize = msg.data.getInt(maxFileSizeKey)
         if (maxFileSize <= 0) return
 

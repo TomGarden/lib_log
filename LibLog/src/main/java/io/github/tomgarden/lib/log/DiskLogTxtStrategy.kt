@@ -1,6 +1,7 @@
 package io.github.tomgarden.lib.log
 
 import android.os.*
+import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +19,7 @@ class DiskLogTxtStrategy(
     override var tag: String,
     override var isLoggable: ((priority: Int, tag: String) -> Boolean),
 
-    var logFilePath: () -> String,
+    var logFilePath: () -> String?,
     private var date: Date,
     private var dateFormat: SimpleDateFormat,
 
@@ -108,7 +109,7 @@ class DiskLogTxtStrategy(
         internal var isLoggable:
                 ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
 
-        internal var logFilePath: () -> String = { Environment.getExternalStorageState() }
+        internal var logFilePath: () -> String? = { throw RuntimeException("must set logFilePath") }
         internal var handler: Handler? = null
             get() {
                 field ?: let {
@@ -148,7 +149,7 @@ class DiskLogTxtStrategy(
             return this
         }
 
-        fun logFilePath(logFilePath: () -> String): Builder {
+        fun logFilePath(logFilePath: () -> String?): Builder {
             this.logFilePath = logFilePath
             return this
         }

@@ -76,7 +76,22 @@ object Logger {
     //region default disk
     fun getDefDiskStrategy(): LogStrategy? = printer.defDiskStrategy
 
-    fun setDefDiskStrategy(defDiskStrategy: LogStrategy) {
+    fun getDefDiskLogTxtStrategy(): DiskLogTxtStrategy? {
+        return printer.defDiskStrategy as DiskLogTxtStrategy?
+    }
+
+    /*check disk log file path*/
+    fun getDefDiskStrategyLogFilePath(): String? {
+        val defDiskStrategy = printer.defDiskStrategy as DiskLogTxtStrategy?
+        val path =
+            defDiskStrategy?.let { defDiskStrategy ->
+                defDiskStrategy.logFilePath.invoke()
+            } ?: "Not setDefDiskStrategy"
+
+        return path
+    }
+
+    fun setDefDiskStrategy(defDiskStrategy: LogStrategy?) {
         printer.defDiskStrategy = defDiskStrategy
     }
 
@@ -98,7 +113,7 @@ object Logger {
     //region temporary disk
     fun getTemporaryDiskStrategy(): LogStrategy? = printer.temporaryDiskStrategy
 
-    fun setTemporaryDiskStrategy(temporaryDiskStrategy: LogStrategy) {
+    fun setTemporaryDiskStrategy(temporaryDiskStrategy: LogStrategy?) {
         printer.temporaryDiskStrategy = temporaryDiskStrategy
     }
 
@@ -120,7 +135,7 @@ object Logger {
     //region default logcat
     fun getDefLogcatStrategy(): LogStrategy? = printer.defLogcatStrategy
 
-    fun setDefLogcatStrategy(defLogcatStrategy: LogStrategy): Logger {
+    fun setDefLogcatStrategy(defLogcatStrategy: LogStrategy?): Logger {
         printer.defLogcatStrategy = defLogcatStrategy
         return this
     }
@@ -143,7 +158,7 @@ object Logger {
     //region temporary logcat
     fun getTemporaryLogcatStrategy(): LogStrategy? = printer.temporaryLogcatStrategy
 
-    fun setTemporaryLogcatStrategy(temporaryLogcatStrategy: LogStrategy): Logger {
+    fun setTemporaryLogcatStrategy(temporaryLogcatStrategy: LogStrategy?): Logger {
         printer.temporaryLogcatStrategy = temporaryLogcatStrategy
         return this
     }
@@ -309,16 +324,19 @@ object Logger {
 
         val logStrategy: LogStrategy = getDefDiskStrategy() ?: return emptyList
 
-        val folderPath: String
+        var folderPath: String? = null
         if (logStrategy is DiskLogTxtStrategy) {
             folderPath = logStrategy.logFilePath.invoke()
         } else if (logStrategy is DiskLogTxtStrategy) {
             folderPath = logStrategy.logFilePath.invoke()
-        } else {
-            return emptyList
         }
 
-        return Utils.getFiles(folderPath, fileName, fileExtend)
+        if (folderPath.isNullOrEmpty()) {
+            return emptyList
+        } else {
+            return Utils.getFiles(folderPath, fileName, fileExtend)
+        }
+
     }
 
 

@@ -3,6 +3,7 @@ package io.github.tomgaren.example.log
 import android.os.Bundle
 import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.EnvironmentCompat
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,20 +17,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //If you need log to locale file
-        val version: String = "${BuildConfig.VERSION_NAME}[${BuildConfig.VERSION_CODE}]"
+        val justLogCat = "If you just want log to LogCat , you needn't any init"
+        Logger.i(justLogCat)
 
+
+        val version = "${BuildConfig.VERSION_NAME}[${BuildConfig.VERSION_CODE}]"
+        val wantLogCatAndLogDisk = "Log to LogCat & Log to disk , you need init Disk log format"
+        val diskLogTxtStrategy =
+            DiskLogTxtStrategy.newBuilder()
+                .tag(version)
+                .logFilePath {
+                    val path = externalCacheDir?.path?.let { "${it}/logDir" }
+                    return@logFilePath path
+                }
+                .build()
+        Logger.setDefDiskStrategy(diskLogTxtStrategy)
+        Logger.d(wantLogCatAndLogDisk)
+        Logger.w("check local log file path : %s", Logger.getDefDiskStrategyLogFilePath() ?: "err")
+
+
+        val justDiskLog = "If you just want log to disk , you need clear defLogCatStrategy"
+        Logger.setDefLogcatStrategy(null)
+            .d(justDiskLog)
+
+        //==========================================================================================
+
+        //If you need log to locale file
         Logger.setDefDiskStrategy(
-                DiskLogTxtStrategy
-                        .newBuilder()
-                        .tag(version)
-                        .logFilePath {
-                            getExternalCacheDir()?.getPath() ?: let {
-                                /*don't forgot storage permission*/
-                                Environment.getExternalStorageState()
-                            }
-                        }
-                        .build())
+            DiskLogTxtStrategy
+                .newBuilder()
+                .tag(version)
+                .logFilePath { return@logFilePath externalCacheDir?.path?.let { "${it}/logDir" } }
+                .build())
 
         btnPrintLog.setOnClickListener {
 
@@ -38,29 +57,33 @@ class MainActivity : AppCompatActivity() {
 
             //You can set any temporary field , But temporary only use once time
             Logger.temporaryLogcatMethodCount(4)
-                    .temporaryLogcatMethodOffset(0)
-                    .temporaryLogcatShowThreadInfo(false)
-                    .temporaryLogcatTag("temporary tag")
-                    .temporaryLogcatIsLoggable { priority, tag -> true /*here you can return false by your logic*/ }
-                    .d("You can set any temporary field. \n" +
-                            "But temporary only use once time")
+                .temporaryLogcatMethodOffset(0)
+                .temporaryLogcatShowThreadInfo(false)
+                .temporaryLogcatTag("temporary tag")
+                .temporaryLogcatIsLoggable { priority, tag -> true /*here you can return false by your logic*/ }
+                .d(
+                    "You can set any temporary field. \n" +
+                            "But temporary only use once time"
+                )
 
             //Now Log has been set default config
             Logger.w("Now Log has been auto set default config")
 
             //Of course , You can change any default config on any where and any time
             Logger.defLogcatMethodCount(8)                                   /*optional*/
-                    .defLogcatMethodOffset(0)                                /*optional*/
-                    .defLogcatShowThreadInfo(true)                                 /*optional*/
-                    .defLogcatTag("DEF_TAG")                                                /*optional*/
-                    .defLogcatIsLoggable { priority, tag -> priority >= Logger.DEBUG }          /*optional*/
-                    .d("Now you have change default log strategy , on any where. \n" +
+                .defLogcatMethodOffset(0)                                /*optional*/
+                .defLogcatShowThreadInfo(true)                                 /*optional*/
+                .defLogcatTag("DEF_TAG")                                                /*optional*/
+                .defLogcatIsLoggable { priority, tag -> priority >= Logger.DEBUG }          /*optional*/
+                .d(
+                    "Now you have change default log strategy , on any where. \n" +
                             "methodCount = %d\n" +
                             "methodOffset = %d\n" +
                             "showThreadInfo = %b\n" +
                             "tag = %s\n" +
                             "isLoggable = %s",
-                            8, 0, true, "DEF_TAG", "Always print log")
+                    8, 0, true, "DEF_TAG", "Always print log"
+                )
 
 
 
@@ -68,7 +91,8 @@ class MainActivity : AppCompatActivity() {
             Logger.e("this msg with locale log file")
             Logger.e(RuntimeException("sd"), true, "sdf")
 
-            val diskLogTxtStrategy: DiskLogTxtStrategy = Logger.getDefDiskStrategy() as DiskLogTxtStrategy
+            val diskLogTxtStrategy: DiskLogTxtStrategy =
+                Logger.getDefDiskStrategy() as DiskLogTxtStrategy
             val localFilePath = diskLogTxtStrategy.logFilePath.invoke()
             Logger.e(true, "You can get locale log file path :$localFilePath")
 

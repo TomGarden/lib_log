@@ -5,7 +5,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
 import java.net.UnknownHostException
-import java.util.Arrays
+import java.nio.charset.Charset
+import java.util.*
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
@@ -148,7 +149,12 @@ internal object Utils {
      * @param maxFileSize Int? 如果 maxFileSize 为 null 意味着, 每次调用都会返回一个新文件
      * @return File
      */
-    private fun getFile(folderPath: String, fileName: String, fileExtend: String, maxFileSize: Int?): File {
+    private fun getFile(
+        folderPath: String,
+        fileName: String,
+        fileExtend: String,
+        maxFileSize: Int?
+    ): File {
 
         val folder = File(folderPath)
         if (!folder.exists()) {
@@ -184,26 +190,40 @@ internal object Utils {
      * @param maxFileSize Int   文件最大体积
      * @param content String    即将写入的文本内容
      */
-    fun write2File(folder: String, fileName: String, fileExtend: String, maxFileSize: Int?, content: String) {
-        var fileWriter: FileWriter? = null
-        val logFile = getFile(folder, fileName, fileExtend, maxFileSize)
+    fun write2File(
+        folder: String,
+        fileName: String,
+        fileExtend: String,
+        maxFileSize: Int?,
+        content: String
+    ) {
 
+        var bufWriter: BufferedWriter? = null
         try {
-            fileWriter = FileWriter(logFile, true)
+            val logFile = getFile(folder, fileName, fileExtend, maxFileSize)
 
-            fileWriter.append(content)
+            val osw = OutputStreamWriter(
+                FileOutputStream(logFile, true), // true to append
+                Charset.forName("UTF-8")    // Set encoding
+            )
+            bufWriter = BufferedWriter(osw)
 
-            fileWriter.flush()
-            fileWriter.close()
+            bufWriter.append(content)
+
+            bufWriter.flush()
+            bufWriter.close()
         } catch (e: IOException) {
-            if (fileWriter != null) {
-                try {
-                    fileWriter.flush()
-                    fileWriter.close()
-                } catch (e1: IOException) {
-                    /* fail silently */
-                }
 
+            Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+                .e("UNKNOWN ERR 1", e)
+
+            try {
+                bufWriter?.flush()
+                bufWriter?.close()
+            } catch (e1: IOException) {
+                /* fail silently */
+                Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+                    .e("UNKNOWN ERR 2", e1)
             }
         }
     }
@@ -232,7 +252,9 @@ internal object Utils {
         if (!folder.exists()) return files
 
         val filesArray = folder.listFiles { pathname: File? ->
-            return@listFiles pathname != null && pathname.name.startsWith(fileName) && pathname.name.endsWith(fileExtend)
+            return@listFiles pathname != null && pathname.name.startsWith(fileName) && pathname.name.endsWith(
+                fileExtend
+            )
         }
 
         filesArray?.let { files.addAll(it) }
@@ -240,7 +262,12 @@ internal object Utils {
         return files
     }
 
-    fun getFiles(folderPath: String, fileName: String, fileExtend: String, operate: ((File) -> Unit)) {
+    fun getFiles(
+        folderPath: String,
+        fileName: String,
+        fileExtend: String,
+        operate: ((File) -> Unit)
+    ) {
         getFiles(folderPath, fileName, fileExtend).forEach { logFile -> operate.invoke(logFile) }
     }
 }
