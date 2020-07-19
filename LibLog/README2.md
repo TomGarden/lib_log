@@ -1,5 +1,6 @@
-使用 GitHub Packages 发布 Android lib
+下文不在维护了 , 最新的内容位于 : https://github.com/TomGarden/tom-notes/issues/8
 
+使用 GitHub Packages 发布 Android lib
 
 
 ## 0x00. 远程仓库了解
@@ -11,7 +12,6 @@
 所以我尝试探索其他的远程仓库
 1. maven
 2. github packages
-
 
 
 ## 0x02. GitHub Packages 了解
@@ -41,7 +41,11 @@ GitHub Packages , 经过测试 , 上传比较快 , 同等环境下(翻墙代理)
 
 配置文件 , 可以直接拷贝也可以参照上文官方指导 , 阅读后再使用
 
-这个示例项目位置: https://maven.pkg.github.com/TomGarden/lib_log
+- 这个示例项目位置 : https://maven.pkg.github.com/TomGarden/lib_log
+- 依赖多个 GitHub Packages 的示例 : https://github.com/TomGarden/lib_pickcolor
+- 关于 token 生成指导 : https://docs.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token
+    - 上传的配置有必要勾选 `write:packages`
+    - 下载的配置有必要勾选 `read:packages`
 
 ```Groovy
 ext {
@@ -102,18 +106,21 @@ __至此依赖包已经上传到 GitHub Packages 了__
 
 在要使用远程库的 Module 中添加代码
 ```Groovy
+//此节点位于 ModuleName/build.gradle
 dependencies {
     //implementation project(path: ':LibLog')
     implementation 'io.github.tomgarden:LibLog:0.1.6'
 }
+
+//此节点位于 ModuleName/build.gradle , 或者 ProjectName/build.gradle
 repositories {
     maven {
-        name = "LibLog"
         url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
+        url = uri("https://maven.pkg.github.com/TomGarden/lib_pickcolor")
         credentials {
-            //下载者的 github 用户名
+            //不限的 github 账户名
             username = System.getenv("TOMGARADEN_USERNAME")
-            //下载者的 Github 中创建的具有 read:packages 权限的 token 即可
+            //与 github 账户名成对的 具有 read:packages 权限的 token
             password = System.getenv("TOMGARADEN_READ_PACKAGES_TOKEN")
         }
     }
@@ -121,8 +128,6 @@ repositories {
 ```
 
 编译运行即可使用了
-
-仍需测试 : 关于使用 github token 下载依赖的情况还需要考虑如果一个人发布了多个组件库应该如何完成这个依赖动作
 
 
 
@@ -138,7 +143,6 @@ repositories {
 
 ## 0x05. 上传到 Maven Central
 
-
 我们按照 https://juejin.im/post/5c3bddeff265da616501c56b 的操作指导(没有上传公钥) ,
 完成了操作 , 并且上传成功了 , 但是在 maven center 搜索不到自己上传的 lib 文件
 还需要跟进
@@ -147,6 +151,7 @@ repositories {
 - jira 问题地址 : https://issues.sonatype.org/browse/OSSRH-59251
 - 仓库地址 : https://oss.sonatype.org/#stagingRepositories
 
+__不想等了 , 本次就采用 GitHub Packages__
 
 ### 5.1. 参考内容
 1. https://www.jianshu.com/p/67d81977b027

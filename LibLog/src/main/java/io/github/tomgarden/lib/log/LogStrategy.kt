@@ -11,11 +11,14 @@ package io.github.tomgarden.lib.log
  *
  */
 abstract class LogStrategy(
-        open var methodCount: Int,
-        open var methodOffset: Int,
-        open var showThreadInfo: Boolean,
-        open var tag: String,
-        open var isLoggable: ((priority: Int, tag: String) -> Boolean)
+    /*控制函数栈深度*/
+    open var methodCount: Int,
+    /*函数栈输出缩进空格数*/
+    open var methodOffset: Int,
+    /*是否展示线程信息*/
+    open var showThreadInfo: Boolean,
+    open var tag: String,
+    open var isLoggable: ((priority: Int, tag: String) -> Boolean)
 ) {
 
 
@@ -24,9 +27,9 @@ abstract class LogStrategy(
      * 用于决定日志是否应该被输出.
      *
      * @param priority is the log level e.g. DEBUG, WARNING
-     * 日志等级(级别)
+     * 日志等级(级别) , 可能需要用于决定日志是否打印
      * @param tag is the given tag for the log message
-     * 这条日志对应的 tag
+     * 这条日志对应的 tag , 可能需要用于决定日志是否打印
      *
      * @return is used to determine if log should printed.
      * If it is true, it will be printed, otherwise it'll be ignored.

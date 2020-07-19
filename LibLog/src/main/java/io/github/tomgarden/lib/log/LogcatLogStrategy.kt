@@ -10,12 +10,12 @@ import android.util.Log
  * 通过使用标准 Log 将日志打印到 AndroidStudio 日志工具窗口
  */
 open class LogcatLogStrategy(
-        override var methodCount: Int,
-        override var methodOffset: Int,
-        override var showThreadInfo: Boolean,
-        override var tag: String,
-        override var isLoggable: ((priority: Int, tag: String) -> Boolean)) :
-        LogStrategy(methodCount, methodOffset, showThreadInfo, tag, isLoggable) {
+    override var methodCount: Int,
+    override var methodOffset: Int,
+    override var showThreadInfo: Boolean,
+    override var tag: String,
+    override var isLoggable: ((priority: Int, tag: String) -> Boolean)
+) : LogStrategy(methodCount, methodOffset, showThreadInfo, tag, isLoggable) {
 
     companion object {
 
@@ -121,17 +121,17 @@ open class LogcatLogStrategy(
             }
             val builder = StringBuilder()
             builder.append(HORIZONTAL_LINE)
-                    .append(' ')
-                    .append(level)
-                    .append(getSimpleClassName(trace[stackIndex].className))
-                    .append(".")
-                    .append(trace[stackIndex].methodName)
-                    .append(" ")
-                    .append(" (")
-                    .append(trace[stackIndex].fileName)
-                    .append(":")
-                    .append(trace[stackIndex].lineNumber)
-                    .append(")")
+                .append(' ')
+                .append(level)
+                .append(getSimpleClassName(trace[stackIndex].className))
+                .append(".")
+                .append(trace[stackIndex].methodName)
+                .append(" ")
+                .append(" (")
+                .append(trace[stackIndex].fileName)
+                .append(":")
+                .append(trace[stackIndex].lineNumber)
+                .append(")")
             level += "   "
             standardLog(priority, builder.toString())
         }
@@ -188,7 +188,8 @@ open class LogcatLogStrategy(
         internal var methodOffset = 0
         internal var showThreadInfo = true
         internal var tag: String = "PRETTY_LOGGER"
-        internal var isLoggable: ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
+        internal var isLoggable: ((priority: Int, tag: String) -> Boolean) =
+            { priority, tag -> true }
 
         fun methodCount(methodCount: Int): Builder {
             this.methodCount = methodCount
@@ -216,7 +217,13 @@ open class LogcatLogStrategy(
         }
 
         fun build(): LogcatLogStrategy {
-            return LogcatLogStrategy(this.methodCount, this.methodOffset, this.showThreadInfo, this.tag, this.isLoggable)
+            return LogcatLogStrategy(
+                this.methodCount,
+                this.methodOffset,
+                this.showThreadInfo,
+                this.tag,
+                this.isLoggable
+            )
         }
     }
 }

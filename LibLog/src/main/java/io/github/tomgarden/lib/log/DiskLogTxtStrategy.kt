@@ -11,37 +11,39 @@ import java.util.*
  * <p>time : 20-1-29 15:39
  * <p>GitHub : https://github.com/TomGarden
  */
-class DiskLogTxtStrategy(override var methodCount: Int,
-                         override var methodOffset: Int,
-                         override var showThreadInfo: Boolean,
-                         override var tag: String,
-                         override var isLoggable: ((priority: Int, tag: String) -> Boolean),
+class DiskLogTxtStrategy(
+    override var methodCount: Int,
+    override var methodOffset: Int,
+    override var showThreadInfo: Boolean,
+    override var tag: String,
+    override var isLoggable: ((priority: Int, tag: String) -> Boolean),
 
-                         var logFilePath: () -> String,
-                         private var date: Date,
-                         private var dateFormat: SimpleDateFormat,
+    var logFilePath: () -> String,
+    private var date: Date,
+    private var dateFormat: SimpleDateFormat,
 
-                         private var handler: Handler
+    private var handler: Handler
 
 ) : LogcatLogStrategy(methodCount, methodOffset, showThreadInfo, tag, isLoggable) {
 
 
     private val SPACE = " "
-    private val builder = StringBuilder()
+    private val strBuilder = StringBuilder()
     private val MAX_BYTES = 500 * 1024 // 500K averages to a 4000 lines per file
 
     private constructor(builder: Builder) : this(
-            builder.methodCount,
-            builder.methodOffset,
-            builder.showThreadInfo,
-            builder.tag,
-            builder.isLoggable,
+        builder.methodCount,
+        builder.methodOffset,
+        builder.showThreadInfo,
+        builder.tag,
+        builder.isLoggable,
 
-            builder.logFilePath,
-            builder.date,
-            builder.dateFormat,
+        builder.logFilePath,
+        builder.date,
+        builder.dateFormat,
 
-            builder.handler!!)
+        builder.handler!!
+    )
 
     companion object {
         fun newBuilder(): Builder {
@@ -52,42 +54,42 @@ class DiskLogTxtStrategy(override var methodCount: Int,
     private fun builderAppend(priority: Int, str: CharSequence) {
 
         // machine-readable date/time
-        builder.append(date.time.toString())
+        strBuilder.append(date.time.toString())
 
         // human-readable date/time
-        builder.append(SPACE)
-        builder.append(dateFormat.format(date))
+        strBuilder.append(SPACE)
+        strBuilder.append(dateFormat.format(date))
 
         // level
-        builder.append(SPACE)
-        builder.append(Utils.logLevel(priority))
+        strBuilder.append(SPACE)
+        strBuilder.append(Utils.logLevel(priority))
 
         // tag
-        builder.append('/')
-        builder.append(tag)
-        builder.append(':')
+        strBuilder.append('/')
+        strBuilder.append(tag)
+        strBuilder.append(':')
 
         // message
-        builder.append(SPACE)
-        builder.append(str)
+        strBuilder.append(SPACE)
+        strBuilder.append(str)
 
-        builder.append('\n')
+        strBuilder.append('\n')
     }
 
 
-    override fun log(priority: Int, content: String, withSingleFile:Boolean) {
+    override fun log(priority: Int, content: String, withSingleFile: Boolean) {
 
-        builder.clear()
+        strBuilder.clear()
         date.time = System.currentTimeMillis()
 
         super.log(priority, content, withSingleFile)
 
         val message = Message()
         val bundle = Bundle()
-        bundle.putString(WriteHandler.contentKey, builder.toString())
+        bundle.putString(WriteHandler.contentKey, strBuilder.toString())
         bundle.putString(WriteHandler.folderPathKey, logFilePath.invoke())
         bundle.putInt(WriteHandler.maxFileSizeKey, MAX_BYTES)
-        bundle.putBoolean(WriteHandler.withSingleFile,withSingleFile)
+        bundle.putBoolean(WriteHandler.withSingleFile, withSingleFile)
         message.data = bundle
         handler.sendMessage(message)
     }
@@ -103,7 +105,8 @@ class DiskLogTxtStrategy(override var methodCount: Int,
         internal var methodOffset = 0
         internal var showThreadInfo = true
         internal var tag: String = "PRETTY_LOGGER"
-        internal var isLoggable: ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
+        internal var isLoggable:
+                ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
 
         internal var logFilePath: () -> String = { Environment.getExternalStorageState() }
         internal var handler: Handler? = null
@@ -117,7 +120,8 @@ class DiskLogTxtStrategy(override var methodCount: Int,
             }
 
         internal var date: Date = Date()
-        internal var dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        internal var dateFormat: SimpleDateFormat =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
 
         fun methodCount(methodCount: Int): Builder {
             this.methodCount = methodCount

@@ -1,4 +1,37 @@
 
+
+[用法](https://github.com/TomGarden/tom-notes/issues/8)
+
+在要使用远程库的 Module 中添加代码
+
+```Groovy
+//此节点位于 ModuleName/build.gradle
+dependencies {
+    //lastVersion : https://github.com/TomGarden/lib_log/packages/316828
+    implementation 'io.github.tomgarden:LibLog:lastVersion'
+}
+
+//此节点位于 ModuleName/build.gradle , 或者 ProjectName/build.gradle
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
+
+        credentials {
+            //不限的 github 账户名
+            username = System.getenv("TOMGARADEN_USERNAME")
+            //与 github 账户名成对的 具有 read:packages 权限的 token
+            password = System.getenv("TOMGARADEN_READ_PACKAGES_TOKEN")
+        }
+    }
+}
+
+```
+
+查看[lastVersion](https://github.com/TomGarden/lib_log/packages/316828)
+
+----
+
+
 ## 0x00 写在开始
 这个项目是基于 Logger 做的二次开发
 

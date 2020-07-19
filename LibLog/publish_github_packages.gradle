@@ -8,7 +8,7 @@ Github Actions 工作流暂未完成
 
 ext {
     moduleVersionCode = 2
-    moduleVersionName = '0.1.10'
+    moduleVersionName = '0.1.11'
     moduleName = 'LibLog'
 
     mavenGroupId = 'io.github.tomgarden'
@@ -73,3 +73,5 @@ task testTask {
 //../gradlew publish
 //一次执行所有
 //./gradlew clean build publish
+//仅针对 LibLog 执行相关命令
+//./gradlew :LibLog:clean :LibLog:build :LibLog:publish
