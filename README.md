@@ -2,6 +2,8 @@
 ## 0x00 写在开始
 这个项目是基于 Logger 做的二次开发
 
+![UML](LibLog/document/UML.png)
+
 ## USAGE Step 1
 
 [REFERENCE](https://github.com/TomGarden/tom-notes/issues/8)
@@ -34,28 +36,28 @@ repositories {
 ## USAGE Step 2
 
 ```kotlin
-        val justLogCat = "If you just want log to LogCat , you needn't any init"
-        Logger.i(justLogCat)
+val justLogCat = "If you just want log to LogCat , you needn't any init"
+Logger.i(justLogCat)
 
 
-        val version = "${BuildConfig.VERSION_NAME}[${BuildConfig.VERSION_CODE}]"
-        val wantLogCatAndLogDisk = "Log to LogCat & Log to disk , you need init Disk log format"
-        val diskLogTxtStrategy =
-            DiskLogTxtStrategy.newBuilder()
-                .tag(version)
-                .logFilePath {
-                    val path = externalCacheDir?.path?.let { "${it}/logDir" }
-                    return@logFilePath path
-                }
-                .build()
-        Logger.setDefDiskStrategy(diskLogTxtStrategy)
-        Logger.d(wantLogCatAndLogDisk)
-        Logger.w("check local log file path : %s", Logger.getDefDiskStrategyLogFilePath() ?: "err")
+val version = "${BuildConfig.VERSION_NAME}[${BuildConfig.VERSION_CODE}]"
+val wantLogCatAndLogDisk = "Log to LogCat & Log to disk , you need init Disk log format"
+val diskLogTxtStrategy =
+    DiskLogTxtStrategy.newBuilder()
+        .tag(version)
+        .logFilePath {
+            val path = externalCacheDir?.path?.let { "${it}/logDir" }
+            return@logFilePath path
+        }
+        .build()
+Logger.setDefDiskStrategy(diskLogTxtStrategy)
+Logger.d(wantLogCatAndLogDisk)
+Logger.w("check local log file path : %s", Logger.getDefDiskStrategyLogFilePath() ?: "err")
 
 
-        val justDiskLog = "If you just want log to disk , you need clear defLogCatStrategy"
-        Logger.setDefLogcatStrategy(null)
-            .d(justDiskLog)
+val justDiskLog = "If you just want log to disk , you need clear defLogCatStrategy"
+Logger.setDefLogcatStrategy(null)
+    .d(justDiskLog)
 ```
 
 ----
