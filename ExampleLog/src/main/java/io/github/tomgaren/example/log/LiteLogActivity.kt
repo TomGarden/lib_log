@@ -39,5 +39,9 @@ class LiteLogActivity : AppCompatActivity() {
 
         TomLogger.defLogcatMethodCount(20)
         TomLogger.e("ActivityStackSupervisor.startSpecificActivityLocked")
+
+        TomLogger.temporaryLogcatMethodCount(2)
+
+
     }
 }

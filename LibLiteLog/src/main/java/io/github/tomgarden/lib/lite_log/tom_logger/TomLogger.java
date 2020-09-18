@@ -23,47 +23,6 @@ public class TomLogger {
         printer.clearLogStrategies();
     }
 
-    //region default disk
-    static TomLogStrategy getDefDiskStrategy() {
-        return printer.defDiskStrategy;
-    }
-
-    static void setDefDiskStrategy(TomLogStrategy defDiskStrategy) {
-        printer.defDiskStrategy = defDiskStrategy;
-    }
-
-    static void defDiskMethodCount(int methodCount) {
-        setMethodCount(printer.defDiskStrategy, methodCount);
-    }
-
-    static void defDiskMethodOffset(int methodOffset) {
-        setMethodOffset(printer.defDiskStrategy, methodOffset);
-    }
-
-    static void defDiskShowThreadInfo(boolean showThreadInfo) {
-        setShowThreadInfo(printer.defDiskStrategy, showThreadInfo);
-    }
-
-    static void defDiskTag(String tag) {
-        setTag(printer.defDiskStrategy, tag);
-    }
-
-    static void defDiskIsLoggable(Function2<Integer, String, Boolean> isLoggable) {
-        setIsLoggable(printer.defDiskStrategy, isLoggable);
-    }
-    //endregion default disk
-
-    //region temporary disk
-    static TomLogStrategy getTemporaryDiskStrategy() {
-        return printer.temporaryDiskStrategy;
-    }
-
-    void setTemporaryDiskStrategy(TomLogStrategy temporaryDiskStrategy) {
-        printer.temporaryDiskStrategy = temporaryDiskStrategy;
-    }
-
-    //endregion temporary disk
-
     //region default logcat
     public static TomLogStrategy getDefLogcatStrategy() {
         return printer.defLogcatStrategy;
