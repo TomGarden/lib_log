@@ -66,8 +66,6 @@ class DiskLogCvsStrategy(
         bundle.putBoolean(WriteHandler.withSingleFile,withSingleFile)
         message.data = bundle
         handler.sendMessage(message)
-
-        handler.sendMessage(message)
     }
 
     private fun logCVS(priority: Int, message: String): String {

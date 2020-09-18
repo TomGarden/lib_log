@@ -1,5 +1,6 @@
 package io.github.tomgaren.example.log
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
@@ -229,6 +230,10 @@ class MainActivity : AppCompatActivity() {
             } catch (throwable: Throwable) {
                 Logger.e(throwable, "empty")
             }
+        }
+
+        btnLiteLog.setOnClickListener {
+            startActivity(Intent(this, LiteLogActivity::class.java))
         }
     }
 }

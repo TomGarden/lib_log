@@ -32,8 +32,10 @@ class WriteHandler(looper: Looper) : Handler(looper) {
         val content = msg.data.getString(contentKey) ?: "null"
         val folderPath = msg.data.getString(folderPathKey)
         if (folderPath.isNullOrEmpty()) {
+            /*避免异常发生的时候造成死循环*/
+            Logger.setDefDiskStrategy(null)
             Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
-                .e("invalid log file path")
+                .e("invalid log file path : '$folderPath'")
             return
         }
         val maxFileSize = msg.data.getInt(maxFileSizeKey)
