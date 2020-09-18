@@ -19,19 +19,19 @@
 2. framework 没有对 kotlin 的支持 , 所以将代码改写为 Java 的了
 3. 直接拷贝到 `frameworks/base/core/java/android/util/tom_logger` 目录中编译失败:
     ```
-    #在当前目录添加本工具包 , 尝试单独编译子模块始终失败 并且没有足够的异常提示 当时使用的编译命令是
+    #尝试单独编译子模块始终失败 并且没有足够的异常提示 当时使用的编译命令是
 
-    ```
+
     $ cd frameworks/base/core
     $ mm
-    ```
+
 
     #后来尝试全量编译 终于提示了有意义的异常信息
 
-    ```
+
     $ m clean
     $ m
-    ```
+
 
     FAILED: out/soong/.intermediates/frameworks/base/api-stubs-docs/android_common/check_current_api.timestamp
 
