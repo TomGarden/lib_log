@@ -11,6 +11,6 @@ import io.github.tomgarden.lib.log.Logger;
  */
 public class Test {
     public void test() {
-        TomLogger.i("msg");
+        TomLogger.INSTANCE.i("msg");
     }
 }

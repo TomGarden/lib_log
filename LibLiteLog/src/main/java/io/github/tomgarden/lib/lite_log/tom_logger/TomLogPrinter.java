@@ -26,7 +26,7 @@ public class TomLogPrinter extends TomPrinter {
                         .tag(defLogcatStrategy.tag)
                         .build();
             }
-            temporaryLogcatStrategy = logStrategy;
+            super.temporaryLogcatStrategy = logStrategy;
         } else {
             logStrategy = temporaryLogcatStrategy;
         }

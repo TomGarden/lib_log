@@ -18,7 +18,7 @@ class LiteLogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lite_log)
 
         btnPrintLog.setOnClickListener {
-            TomLogger.e("errMessage")
+            TomLogger.INSTANCE.e("errMessage")
         }
 
         btnCoroutinesPrintLog?.setOnClickListener { test1() }
@@ -37,10 +37,10 @@ class LiteLogActivity : AppCompatActivity() {
 //        TomLogger.e(Throwable("Just Throwable"), "otherMsg")
 
 
-        TomLogger.defLogcatMethodCount(20)
-        TomLogger.e("ActivityStackSupervisor.startSpecificActivityLocked")
-
-        TomLogger.temporaryLogcatMethodCount(2)
+        //TomLogger.defLogcatMethodCount(20)
+        TomLogger.INSTANCE
+            .temporaryLogcatMethodCount(20)
+            .e("ActivityStackSupervisor.startSpecificActivityLocked")
 
 
     }
