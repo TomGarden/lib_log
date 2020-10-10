@@ -75,42 +75,49 @@ public class TomLogger {
     //endregion default logcat
 
     //region temporary logcat
-    public TomLogStrategy getTemporaryLogcatStrategy() {
+    public TomLogStrategy getTempLogcatStrategy() {
         return printer.temporaryLogcatStrategy;
     }
 
-    public TomLogger setTemporaryLogcatStrategy(TomLogStrategy temporaryLogcatStrategy) {
+    public TomLogger setTempLogcatStrategy(TomLogStrategy temporaryLogcatStrategy) {
         printer.temporaryLogcatStrategy = temporaryLogcatStrategy;
         return this;
     }
 
-    public TomLogger temporaryLogcatMethodCount(int methodCount) {
+    public TomLogger tempLogcatMethodCount(int methodCount) {
         setMethodCount(printer.unNullTemporaryLogcatStrategy(), methodCount);
         return this;
     }
 
-    public TomLogger temporaryLogcatMethodOffset(int methodOffset) {
+    public TomLogger tempLogcatMethodOffset(int methodOffset) {
         setMethodOffset(printer.unNullTemporaryLogcatStrategy(), methodOffset);
         return this;
     }
 
-    public TomLogger temporaryLogcatShowThreadInfo(boolean showThreadInfo) {
+    public TomLogger tempLogcatShowThreadInfo(boolean showThreadInfo) {
         setShowThreadInfo(printer.unNullTemporaryLogcatStrategy(), showThreadInfo);
         return this;
     }
 
-    public TomLogger temporaryLogcatTag(String tag) {
+    public TomLogger tempLogcatTag(String tag) {
         setTag(printer.unNullTemporaryLogcatStrategy(), tag);
         return this;
     }
 
-    public TomLogger temporaryLogcatIsLoggable(Function2<Integer, String, Boolean> isLoggable) {
+    public TomLogger tempLogcatIsLoggable(Function2<Integer, String, Boolean> isLoggable) {
         setIsLoggable(printer.unNullTemporaryLogcatStrategy(), isLoggable);
         return this;
     }
 
-    public TomLogger temporaryJustMsg() {
-        temporaryLogcatShowThreadInfo(false);
+    public TomLogger tempJustMsg(int methodOffset) {
+        this.tempLogcatMethodCount(methodOffset)
+                .tempLogcatShowThreadInfo(false);
+        return this;
+    }
+
+    public TomLogger tempJustMsg() {
+        int methodOffset = printer.unNullTemporaryLogcatStrategy().methodCount;
+        tempJustMsg(methodOffset);
         return this;
     }
     //endregion temporary logcat
@@ -162,7 +169,7 @@ public class TomLogger {
     }
 
     private TomLogger nullPointLog() {
-        TomLogStrategy logStrategy = getTemporaryLogcatStrategy();
+        TomLogStrategy logStrategy = getTempLogcatStrategy();
         if (logStrategy != null) {
             logStrategy.log(ERROR, "Null point exception, 'Logger.setXxx(..)' is failed");
         }
