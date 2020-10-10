@@ -19,8 +19,8 @@ class LiteLogActivity : AppCompatActivity() {
 
         btnPrintLog.setOnClickListener {
             TomLogger.INSTANCE.e("errMessage")
-            TomLogger.INSTANCE.temporaryJustMsg().e("TomLogger.INSTANCE.temporaryJustMsg().e")
-            TomLogger.INSTANCE.temporaryLogcatMethodCount(0).temporaryLogcatShowThreadInfo(false).e("TomLogger.INSTANCE.temporaryJustMsg().e")
+            TomLogger.INSTANCE.tempJustMsg().e("TomLogger.INSTANCE.tempJustMsg().e")
+            TomLogger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false).e("TomLogger.INSTANCE.tempJustMsg().e")
         }
 
         btnCoroutinesPrintLog?.setOnClickListener { test1() }
@@ -41,7 +41,7 @@ class LiteLogActivity : AppCompatActivity() {
 
         //TomLogger.defLogcatMethodCount(20)
         TomLogger.INSTANCE
-            .temporaryLogcatMethodCount(20)
+            .tempLogcatMethodCount(20)
             .e("ActivityStackSupervisor.startSpecificActivityLocked")
 
 
