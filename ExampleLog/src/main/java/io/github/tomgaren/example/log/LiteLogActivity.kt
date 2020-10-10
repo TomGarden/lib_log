@@ -19,6 +19,8 @@ class LiteLogActivity : AppCompatActivity() {
 
         btnPrintLog.setOnClickListener {
             TomLogger.INSTANCE.e("errMessage")
+            TomLogger.INSTANCE.temporaryJustMsg().e("TomLogger.INSTANCE.temporaryJustMsg().e")
+            TomLogger.INSTANCE.temporaryLogcatMethodCount(0).temporaryLogcatShowThreadInfo(false).e("TomLogger.INSTANCE.temporaryJustMsg().e")
         }
 
         btnCoroutinesPrintLog?.setOnClickListener { test1() }
