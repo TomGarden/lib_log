@@ -109,8 +109,8 @@ public class TomLogger {
         return this;
     }
 
-    public TomLogger tempJustMsg(int methodOffset) {
-        this.tempLogcatMethodCount(methodOffset)
+    public TomLogger tempJustMsg(int methodCount) {
+        this.tempLogcatMethodCount(methodCount)
                 .tempLogcatShowThreadInfo(false);
         return this;
     }

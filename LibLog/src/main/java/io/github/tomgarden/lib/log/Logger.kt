@@ -179,7 +179,12 @@ object Logger {
         setIsLoggable(printer.unNullTemporaryLogcatStrategy(), isLoggable)
 
     fun tempJustMsg(): Logger {
-        return tempLogcatShowThreadInfo(false)
+        val methodCount = printer.unNullTemporaryLogcatStrategy().methodCount
+        return tempJustMsg(methodCount)
+    }
+
+    fun tempJustMsg(methodCount: Int): Logger {
+        return tempLogcatMethodCount(methodCount).tempLogcatShowThreadInfo(false)
     }
     //endregion temporary logcat
 
