@@ -58,6 +58,12 @@ publishing {
     }
 }
 
+//这个代码块是权宜之计 ; 并非所有情况下都需要做这个代码块 , 如果本身可以打出需要的包名的包 , 此处即可注释
+android {
+    buildTypes {
+        archivesBaseName = moduleName
+    }
+}
 
 task testTask {
     //测试 gradle 语法
