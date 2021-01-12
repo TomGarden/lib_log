@@ -9,7 +9,7 @@ Github Actions 工作流暂未完成
 ext {
     moduleVersionCode = 2
     moduleVersionName = '0.1.12'
-    moduleName = 'LibLog'
+    moduleName = 'lib_log'
 
     mavenGroupId = 'io.github.tomgarden'
 }
