@@ -12,7 +12,7 @@
 //ModuleName/build.gradle
 dependencies {
     //lastVersion : https://github.com/TomGarden/lib_log/packages/316828
-    implementation 'io.github.tomgarden:LibLog:lastVersion'
+    implementation 'io.github.tomgarden:lib_log:+'
 }
 
 //ModuleName/build.gradle   OR    ProjectName/build.gradle

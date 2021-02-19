@@ -109,7 +109,7 @@ __至此依赖包已经上传到 GitHub Packages 了__
 //此节点位于 ModuleName/build.gradle
 dependencies {
     //implementation project(path: ':LibLog')
-    implementation 'io.github.tomgarden:LibLog:0.1.6'
+    implementation 'io.github.tomgarden:lib_log:+'
 }
 
 //此节点位于 ModuleName/build.gradle , 或者 ProjectName/build.gradle
