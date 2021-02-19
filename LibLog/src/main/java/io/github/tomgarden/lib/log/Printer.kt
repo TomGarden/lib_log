@@ -32,13 +32,27 @@ interface Printer {
 
   fun e(throwable: Throwable?, withSingleFile: Boolean, message: String?, vararg args: Any)
 
+  fun e(any: Any?)
+
   fun w(message: String?, vararg args: Any)
+
+  fun w(any: Any?)
 
   fun i(message: String?, vararg args: Any)
 
+  fun i(any: Any?)
+
   fun v(message: String?, vararg args: Any)
 
+  fun v(any: Any?)
+
   fun wtf(message: String?, vararg args: Any)
+
+  fun wtf(assert: Boolean, message: String?, vararg args: Any)
+
+  fun wtf(any: Any?)
+
+  fun wtf(assert: Boolean, any: Any?)
 
   /**
    * Formats the given json content and print it

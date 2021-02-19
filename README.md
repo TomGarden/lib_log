@@ -131,11 +131,14 @@ try{
 }
 ```
 
-## 进度暂存
+## DONE
 1. 日志位置应该随时可以通过工具调取
 2. [通过 github packages 发布远程包](https://docs.github.com/cn/packages/publishing-and-managing-packages)
-
-
+3. `Logger.i()` 的入参兼容性不够 , 考虑增加兼容性 , 记得反三(考虑其他 level 情况下的入参兼容性)
+    ```
+    出现问题的情况是 Logger.e(StringBuilder) , 至少应该兼容至 CharSequence , 甚至 Any?
+    ```
+4. 参照 Tetris 增加 ASSERT 日志逻辑
 
 
 

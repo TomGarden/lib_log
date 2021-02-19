@@ -72,39 +72,20 @@ internal object Utils {
     }
 
     fun toString(any: Any?): String {
-        if (any == null) {
-            return "null"
+        return when {
+            any == null -> "null"
+            !any.javaClass.isArray -> any.toString()
+            any is BooleanArray -> Arrays.toString(any as BooleanArray?)
+            any is ByteArray -> Arrays.toString(any as ByteArray?)
+            any is CharArray -> Arrays.toString(any as CharArray?)
+            any is ShortArray -> Arrays.toString(any as ShortArray?)
+            any is IntArray -> Arrays.toString(any as IntArray?)
+            any is LongArray -> Arrays.toString(any as LongArray?)
+            any is FloatArray -> Arrays.toString(any as FloatArray?)
+            any is DoubleArray -> Arrays.toString(any as DoubleArray?)
+            any is Array<*> -> Arrays.deepToString(any as Array<*>?)
+            else -> "Couldn't find a correct type for the object"
         }
-        if (!any.javaClass.isArray) {
-            return any.toString()
-        }
-        if (any is BooleanArray) {
-            return Arrays.toString(any as BooleanArray?)
-        }
-        if (any is ByteArray) {
-            return Arrays.toString(any as ByteArray?)
-        }
-        if (any is CharArray) {
-            return Arrays.toString(any as CharArray?)
-        }
-        if (any is ShortArray) {
-            return Arrays.toString(any as ShortArray?)
-        }
-        if (any is IntArray) {
-            return Arrays.toString(any as IntArray?)
-        }
-        if (any is LongArray) {
-            return Arrays.toString(any as LongArray?)
-        }
-        if (any is FloatArray) {
-            return Arrays.toString(any as FloatArray?)
-        }
-        if (any is DoubleArray) {
-            return Arrays.toString(any as DoubleArray?)
-        }
-        return if (any is Array<*>) {
-            Arrays.deepToString(any as Array<*>?)
-        } else "Couldn't find a correct type for the object"
     }
 
     fun getFormatJsonFromString(str: String): String {
@@ -214,7 +195,7 @@ internal object Utils {
             bufWriter.close()
         } catch (e: IOException) {
 
-            Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+            Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
                 .e("UNKNOWN ERR 1", e)
 
             try {
@@ -222,7 +203,7 @@ internal object Utils {
                 bufWriter?.close()
             } catch (e1: IOException) {
                 /* fail silently */
-                Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+                Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
                     .e("UNKNOWN ERR 2", e1)
             }
         }

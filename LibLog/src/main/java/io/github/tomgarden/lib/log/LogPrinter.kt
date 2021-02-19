@@ -87,20 +87,52 @@ internal class LogPrinter : Printer {
         log(ERROR, throwable, withSingleFile, message, *args)
     }
 
+    override fun e(any: Any?) {
+        log(ERROR, null, false, Utils.toString(any))
+    }
+
     override fun w(message: String?, vararg args: Any) {
         log(WARN, null, false, message, *args)
+    }
+
+    override fun w(any: Any?) {
+        log(WARN, null, false, Utils.toString(any))
     }
 
     override fun i(message: String?, vararg args: Any) {
         log(INFO, null, false, message, *args)
     }
 
+    override fun i(any: Any?) {
+        log(INFO, null, false, Utils.toString(any))
+    }
+
     override fun v(message: String?, vararg args: Any) {
         log(VERBOSE, null, false, message, *args)
     }
 
+    override fun v(any: Any?) {
+        log(VERBOSE, null, false, Utils.toString(any))
+    }
+
     override fun wtf(message: String?, vararg args: Any) {
         log(ASSERT, null, false, message, *args)
+    }
+
+    override fun wtf(assert: Boolean, message: String?, vararg args: Any) {
+        if (assert) {
+            log(ASSERT, null, false, message, *args)
+        }
+    }
+
+    override fun wtf(any: Any?) {
+        log(ASSERT, null, false, Utils.toString(any))
+    }
+
+    override fun wtf(assert: Boolean, any: Any?) {
+        if (assert) {
+            log(ASSERT, null, false, Utils.toString(any))
+        }
     }
 
     override fun json(json: String?) {

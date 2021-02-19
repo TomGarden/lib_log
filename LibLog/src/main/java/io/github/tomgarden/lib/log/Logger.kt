@@ -243,9 +243,7 @@ object Logger {
         printer.d(message, *args)
     }
 
-    fun d(any: Any?) {
-        printer.d(any)
-    }
+    fun d(any: Any?) = printer.d(any)
 
     fun e(message: String?, vararg args: Any) {
         printer.e(false, message, *args)
@@ -263,17 +261,25 @@ object Logger {
         printer.e(throwable, withSingleFile, message, *args)
     }
 
+    fun e(any: Any?) = printer.e(any)
+
     fun i(message: String?, vararg args: Any) {
         printer.i(message, *args)
     }
+
+    fun i(any: Any?) = printer.i(any)
 
     fun v(message: String?, vararg args: Any) {
         printer.v(message, *args)
     }
 
+    fun v(any: Any?) = printer.v(any)
+
     fun w(message: String?, vararg args: Any) {
         printer.w(message, *args)
     }
+
+    fun w(any: Any?) = printer.w(any)
 
     /**
      * Tip: Use this for exceptional situations to log
@@ -282,6 +288,14 @@ object Logger {
     fun wtf(message: String?, vararg args: Any) {
         printer.wtf(message, *args)
     }
+
+    fun assert(assert: Boolean, message: String?, vararg args: Any) {
+        printer.wtf(assert, message, *args)
+    }
+
+    fun wtf(any: Any?) = printer.wtf(any)
+
+    fun assert(assert: Boolean, any: Any?) = printer.wtf(assert, any)
 
     /**
      * Formats the given json content and print it

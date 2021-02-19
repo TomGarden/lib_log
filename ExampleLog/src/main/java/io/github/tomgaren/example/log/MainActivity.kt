@@ -2,15 +2,14 @@ package io.github.tomgaren.example.log
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.EnvironmentCompat
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,11 +56,11 @@ class MainActivity : AppCompatActivity() {
             Logger.e("You needn't any init option , LibLog has def config .")
 
             //You can set any temporary field , But temporary only use once time
-            Logger.temporaryLogcatMethodCount(4)
-                .temporaryLogcatMethodOffset(0)
-                .temporaryLogcatShowThreadInfo(false)
-                .temporaryLogcatTag("temporary tag")
-                .temporaryLogcatIsLoggable { priority, tag -> true /*here you can return false by your logic*/ }
+            Logger.tempLogcatMethodCount(4)
+                .tempLogcatMethodOffset(0)
+                .tempLogcatShowThreadInfo(false)
+                .tempLogcatTag("temp tag")
+                .tempLogcatIsLoggable { priority, tag -> true /*here you can return false by your logic*/ }
                 .d(
                     "You can set any temporary field. \n" +
                             "But temporary only use once time"

@@ -34,7 +34,7 @@ class WriteHandler(looper: Looper) : Handler(looper) {
         if (folderPath.isNullOrEmpty()) {
             /*避免异常发生的时候造成死循环*/
             Logger.setDefDiskStrategy(null)
-            Logger.setTemporaryLogcatStrategy(LogcatLogStrategy.newBuilder().build())
+            Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
                 .e("invalid log file path : '$folderPath'")
             return
         }
