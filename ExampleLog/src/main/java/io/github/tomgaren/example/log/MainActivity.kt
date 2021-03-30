@@ -2,6 +2,7 @@ package io.github.tomgaren.example.log
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
@@ -36,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         Logger.w("check local log file path : %s", Logger.getDefDiskStrategyLogFilePath() ?: "err")
 
 
-        val justDiskLog = "If you just want log to disk , you need clear defLogCatStrategy"
-        Logger.setDefLogcatStrategy(null)
-            .d(justDiskLog)
+//        val justDiskLog = "If you just want log to disk , you need clear defLogCatStrategy"
+//        Logger.setDefLogcatStrategy(null)
+//            .d(justDiskLog)
 
         //==========================================================================================
 
@@ -234,5 +235,23 @@ class MainActivity : AppCompatActivity() {
         btnLiteLog.setOnClickListener {
             startActivity(Intent(this, LiteLogActivity::class.java))
         }
+
+        btn_auto_collapse.setOnClickListener {
+            val string = "F\nF\nF\nF\n"
+            Logger.e(string)
+        }
+
+        btn_auto_expand.setOnClickListener {
+
+            whiteList()
+            val string = "F\nF\nF\nF\n"
+            Logger.e(string)
+        }
+    }
+
+    /*应对打印相同内容出现折叠的状况*/
+    fun whiteList() {
+        val whiteList = "logcat -P '${Process.myPid()}'"
+        Runtime.getRuntime().exec(whiteList).waitFor()
     }
 }

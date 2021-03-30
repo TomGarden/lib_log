@@ -11,43 +11,64 @@
         android:id="@+id/btnLiteLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="lite-log" />
+        android:text="lite-log"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnPrintLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="print　Log, 打印日志" />
+        android:text="print　Log, 打印日志"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnCoroutinesPrintLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="[coroutines]   Print 　Log , 协程死循环打印日志" />
+        android:text="[coroutines]   Print 　Log , 协程死循环打印日志"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnCoroutinesClearLogFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="[[coroutines]] clear　Log File 协程删除日志文件" />
+        android:text="[[coroutines]] clear　Log File 协程删除日志文件"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnSubThreadPrintLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="[sub Thread]   Print 　Log , 线程死循环打印日志" />
+        android:text="[sub Thread]   Print 　Log , 线程死循环打印日志"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnSubThreadClearLogFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="[[sub Thread]] clear　Log File, 线程删除日志文件" />
+        android:text="[[sub Thread]] clear　Log File, 线程删除日志文件"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnFormatLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打印格式化参数日志" />
+        android:text="打印格式化参数日志"
+        android:textAllCaps="false" />
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_auto_collapse"
+            android:layout_width="wrap_content"
+            android:text="相同内容自动折叠" />
+
+        <Button
+            android:id="@+id/btn_auto_expand"
+            android:layout_width="wrap_content"
+            android:text="相同内容不自动折叠" />
+    </TableRow>
 
 </LinearLayout>
