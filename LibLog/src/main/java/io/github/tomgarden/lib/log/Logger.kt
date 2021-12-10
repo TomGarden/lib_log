@@ -67,6 +67,8 @@ object Logger {
     val ERROR = 6
     val ASSERT = 7
 
+    var assertEnableThrow: Boolean = BuildConfig.DEBUG
+        private set
     var printer: Printer = LogPrinter()
 
     fun clearLogStrategies() = printer.clearLogStrategies()
@@ -228,6 +230,10 @@ object Logger {
     }
     //endregion set logStrategy
 
+    fun setAssertEnableThrow(boolean: Boolean): Logger {
+        assertEnableThrow = boolean
+        return this
+    }
 
     /**
      * General log function that accepts all configurations as parameter
@@ -289,12 +295,14 @@ object Logger {
      * @param assert 此字段 为 true 的时候 , 会抛出自定义异常
      * @param msg
      */
-    fun assertThrow(assert: Boolean, msg: Any? = null) {
+    fun assertThrow(assert: Boolean) = assertThrow(assert, null, assertEnableThrow)
+    fun assertThrow(assert: Boolean, msg: Any?) = assertThrow(assert, msg, assertEnableThrow)
+    fun assertThrow(assert: Boolean, msg: Any?, enableThrow: Boolean) {
         if (!assert) return
         val msgStr = Utils.toString(msg)
         val throwable = RuntimeException(msgStr)
         Logger.e(throwable, true, msgStr)
-        if(BuildConfig.DEBUG) {
+        if (enableThrow) {
             throw  throwable
         }
     }
