@@ -133,7 +133,10 @@ try{
 
 ## TODO LIST
 
-[多行输出异常校验](https://stackoverflow.com/questions/34587273/android-logcat-logs-chatty-module-line-expire-message)
+1. 断言 ASSERT throw
+2. 控制函数输出栈 , 指定从哪一级开始输出函数栈
+3. [多行输出异常校验](https://stackoverflow.com/questions/34587273/android-logcat-logs-chatty-module-line-expire-message)
+    - [尝试过但无效的操作(这个操作先执行`adb shell`)(在小米手机试的)](https://stackoverflow.com/a/48279213/7707781)
 ```
 合理输出
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -156,7 +159,16 @@ try{
 │ F,
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
-
+4. dividerLine visible : 美化线条是否打印
+5. 分文件控制日志样式, 以及分文件控制日志是否打印
+    - 既有的所有配置信息都有一份全局配置
+        ```java
+          if(没有文件控制配置){
+              使用全局配置
+          }else{
+              使用文件配置完成日志打印
+          }
+        ```
 
 ## DONE
 1. 日志位置应该随时可以通过工具调取
@@ -166,6 +178,7 @@ try{
     出现问题的情况是 Logger.e(StringBuilder) , 至少应该兼容至 CharSequence , 甚至 Any?
     ```
 4. 参照 Tetris 增加 ASSERT 日志逻辑
+5. 本地化日志文件名 , 用时间戳命名
 
 
 

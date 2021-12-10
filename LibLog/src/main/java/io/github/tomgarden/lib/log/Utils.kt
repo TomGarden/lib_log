@@ -4,19 +4,24 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
+import java.lang.ref.WeakReference
 import java.net.UnknownHostException
 import java.nio.charset.Charset
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.logging.SimpleFormatter
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
+import kotlin.Comparator
 
 /**
  * Provides convenient methods to some common operations
  */
 internal object Utils {
 
+    private var lastLogFile: WeakReference<File>? = null
     private val JSON_INDENT = 2
 
     /**
@@ -122,7 +127,9 @@ internal object Utils {
 
 
     /**
-     * 获取一个可以写入内容的文件
+     * 获取一个可以写入内容的文件 , 文件名应该携带时间戳
+     * lib_log_logs.__23154145234524__2021-12-10_11-13-06-999.txt
+     * lib_log_crash.__23154145234524__2021-12-10_11-13-06-999.txt
      *
      * @param folderPath String
      * @param fileName String
@@ -137,29 +144,63 @@ internal object Utils {
         maxFileSize: Int?
     ): File {
 
+        val timestampDelimiter = "__"
+
+        fun File.getTimestamp(): Long = try {
+            this.name.split(timestampDelimiter)[1].toLongOrNull() ?: 0
+        } catch (throwable: Throwable) {
+            0
+        }
+
+        /*格式如下:__23154145234524__2021-12-10_11-13-06-999-*/
+        fun getTimestampStr(): String {
+            val timestampLong = System.currentTimeMillis()
+            val timeFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS_Z", Locale.getDefault())
+            val simpleTimestampStr = timeFormat.format(timestampLong)
+            return "${timestampDelimiter}${timestampLong}${timestampDelimiter}${simpleTimestampStr}"
+        }
+
         val folder = File(folderPath)
         if (!folder.exists()) {
             //TODO: What if folder is not created, what happens then?
             folder.mkdirs()
         }
 
-        var newFileCount = 0
-        var newFile: File
-        var existingFile: File? = null
+        val timestampMaxFile: File? = when {
+            maxFileSize == null -> null
+            else -> {
+                val tempFile: File? = lastLogFile?.get()
+                when {
+                    tempFile != null -> tempFile
+                    else -> folder.listFiles()?.maxWith(Comparator<File> { fileOne, fileTwo ->
+                        val oneTimestamp = fileOne.getTimestamp()
+                        val twoTimestamp = fileTwo.getTimestamp()
 
-        newFile = File(folder, String.format("%s_%s.%s", fileName, newFileCount, fileExtend))
-        while (newFile.exists()) {
-            existingFile = newFile
-            newFileCount++
-            newFile = File(folder, String.format("%s_%s.%s", fileName, newFileCount, fileExtend))
+                        when {
+                            oneTimestamp < twoTimestamp -> -1
+                            oneTimestamp == twoTimestamp -> 0
+                            else/*oneTimestamp > twoTimestamp*/ -> 1
+                        }
+                    })
+                }
+            }
         }
 
-        return if (existingFile != null && maxFileSize != null) {
-            if (existingFile.length() >= maxFileSize) {
-                newFile
-            } else existingFile
-        } else newFile
+        val newFile =
+            File(folder, String.format("%s.%s.%s", fileName, getTimestampStr(), fileExtend))
 
+        return when {
+            maxFileSize == null -> newFile
+            else -> {
+                val resultFile = when {
+                    timestampMaxFile == null -> newFile
+                    timestampMaxFile.length() >= maxFileSize -> newFile
+                    else -> timestampMaxFile
+                }
+                lastLogFile = WeakReference(resultFile)
+                resultFile
+            }
+        }
     }
 
     /**
