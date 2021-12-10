@@ -107,14 +107,14 @@ class MainActivity : AppCompatActivity() {
 
                 delay(1000)
 
-                Logger.getCrashLogFiles { crashFile ->
+                Logger.getCrashLogFiles().forEach { crashFile ->
                     System.out.println(Logger.readFile(crashFile.path))
                     crashFile.delete()
                 }
             }
 
             System.out.println(Logger.getCrashLogFiles().size)
-            Logger.getCrashLogFiles { crashFile ->
+            Logger.getCrashLogFiles().forEach { crashFile ->
                 System.out.println(Logger.readFile(crashFile.path))
                 crashFile.delete()
             }

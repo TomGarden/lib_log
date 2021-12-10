@@ -69,16 +69,13 @@ object Logger {
 
     var printer: Printer = LogPrinter()
 
-    fun clearLogStrategies() {
-        printer.clearLogStrategies()
-    }
+    fun clearLogStrategies() = printer.clearLogStrategies()
 
     //region default disk
     fun getDefDiskStrategy(): LogStrategy? = printer.defDiskStrategy
 
-    fun getDefDiskLogTxtStrategy(): DiskLogTxtStrategy? {
-        return printer.defDiskStrategy as DiskLogTxtStrategy?
-    }
+    fun getDefDiskLogTxtStrategy(): DiskLogTxtStrategy? =
+        printer.defDiskStrategy as DiskLogTxtStrategy?
 
     /*check disk log file path*/
     fun getDefDiskStrategyLogFilePath(): String? {
@@ -235,49 +232,35 @@ object Logger {
     /**
      * General log function that accepts all configurations as parameter
      */
-    fun log(priority: Int, message: String?, throwable: Throwable?, withSingleFile: Boolean) {
+    fun log(priority: Int, message: String?, throwable: Throwable?, withSingleFile: Boolean) =
         printer.log(priority, message, throwable, withSingleFile)
-    }
 
-    fun d(message: String?, vararg args: Any) {
-        printer.d(message, *args)
-    }
+    fun d(message: String?, vararg args: Any) = printer.d(message, *args)
 
     fun d(any: Any?) = printer.d(any)
 
-    fun e(message: String?, vararg args: Any) {
-        printer.e(false, message, *args)
-    }
+    fun e(message: String?, vararg args: Any) = printer.e(false, message, *args)
 
-    fun e(withSingleFile: Boolean, message: String?, vararg args: Any) {
+    fun e(withSingleFile: Boolean, message: String?, vararg args: Any) =
         printer.e(withSingleFile, message, args)
-    }
 
-    fun e(throwable: Throwable?, message: String, vararg args: Any) {
+    fun e(throwable: Throwable?, message: String, vararg args: Any) =
         printer.e(throwable, false, message, *args)
-    }
 
-    fun e(throwable: Throwable?, withSingleFile: Boolean, message: String, vararg args: Any) {
+    fun e(throwable: Throwable?, withSingleFile: Boolean, message: String, vararg args: Any) =
         printer.e(throwable, withSingleFile, message, *args)
-    }
 
     fun e(any: Any?) = printer.e(any)
 
-    fun i(message: String?, vararg args: Any) {
-        printer.i(message, *args)
-    }
+    fun i(message: String?, vararg args: Any) = printer.i(message, *args)
 
     fun i(any: Any?) = printer.i(any)
 
-    fun v(message: String?, vararg args: Any) {
-        printer.v(message, *args)
-    }
+    fun v(message: String?, vararg args: Any) = printer.v(message, *args)
 
     fun v(any: Any?) = printer.v(any)
 
-    fun w(message: String?, vararg args: Any) {
-        printer.w(message, *args)
-    }
+    fun w(message: String?, vararg args: Any) = printer.w(message, *args)
 
     fun w(any: Any?) = printer.w(any)
 
@@ -285,13 +268,10 @@ object Logger {
      * Tip: Use this for exceptional situations to log
      * ie: Unexpected errors etc
      */
-    fun wtf(message: String?, vararg args: Any) {
-        printer.wtf(message, *args)
-    }
+    fun wtf(message: String?, vararg args: Any) = printer.wtf(message, *args)
 
-    fun assert(assert: Boolean, message: String?, vararg args: Any) {
+    fun assert(assert: Boolean, message: String?, vararg args: Any) =
         printer.wtf(assert, message, *args)
-    }
 
     fun wtf(any: Any?) = printer.wtf(any)
 
@@ -300,43 +280,19 @@ object Logger {
     /**
      * Formats the given json content and print it
      */
-    fun json(json: String?) {
-        printer.json(json)
-    }
+    fun json(json: String?) = printer.json(json)
 
     /**
      * Formats the given xml content and print it
      */
-    fun xml(xml: String?) {
-        printer.xml(xml)
-    }
+    fun xml(xml: String?) = printer.xml(xml)
 
 
     //***************************************************************************************
     //                                 文件读取
     //***************************************************************************************
 
-    fun readFile(filePath: String): String {
-        return Utils.readFile(filePath)
-    }
-
-    /**
-     * 读取文件 和 DiskLogStrategy 配合使用
-     *
-     * @param folderPath String             文件的父文件夹
-     * @param fileName String               文件名字
-     * @param fileExtend String             文件扩真名
-     * @param operate Function1<File, Unit> 对这个文件的操作
-     */
-    fun getFiles(
-        folderPath: String,
-        fileName: String,
-        fileExtend: String,
-        operate: ((File) -> Unit)
-    ) {
-        Utils.getFiles(folderPath, fileName, fileExtend)
-            .forEach { logFile -> operate.invoke(logFile) }
-    }
+    fun readFile(filePath: String): String = Utils.readFile(filePath)
 
     fun getLogFiles(fileName: String, fileExtend: String): MutableList<File> {
         val emptyList: MutableList<File> = mutableListOf()
@@ -353,40 +309,20 @@ object Logger {
         if (folderPath.isNullOrEmpty()) {
             return emptyList
         } else {
-            return Utils.getFiles(folderPath, fileName, fileExtend)
+            return Utils.getLogFiles(folderPath, fileName, fileExtend)
         }
 
     }
 
 
-    fun getCrashLogFiles(): MutableList<File> {
-        return getLogFiles(WriteHandler.crashLogName, WriteHandler.fileExtend)
-    }
+    fun getCrashLogFiles(): MutableList<File> =
+        getLogFiles(WriteHandler.crashLogName, WriteHandler.fileExtend)
 
-    fun getCrashLogFiles(operate: ((File) -> Unit)) {
-        getCrashLogFiles().forEach { logFile -> operate.invoke(logFile) }
-    }
-
-    fun clearCrashLogFiles() {
-        getCrashLogFiles { it.delete() }
-    }
-
-
-    fun getNormalLogFiles(): MutableList<File> {
-        return getLogFiles(WriteHandler.normalLogName, WriteHandler.fileExtend)
-    }
-
-    fun getNormalLogFiles(operate: ((File) -> Unit)) {
-        getNormalLogFiles().forEach { logFile -> operate.invoke(logFile) }
-    }
-
-    fun clearNormalLogFiles() {
-        getNormalLogFiles { it.delete() }
-    }
-
+    fun getNormalLogFiles(): MutableList<File> =
+        getLogFiles(WriteHandler.normalLogName, WriteHandler.fileExtend)
 
     fun clearLogFiles() {
-        clearNormalLogFiles()
-        clearCrashLogFiles()
+        getNormalLogFiles().forEach { logFile -> logFile.delete() }
+        getCrashLogFiles().forEach { logFile -> logFile.delete() }
     }
 }

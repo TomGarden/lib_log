@@ -125,11 +125,14 @@ internal object Utils {
         return result
     }
 
+    fun getLogFileName(fileName: String, fileExtend: String) =
+        String.format("%s.%s", fileName, fileExtend)
 
     /**
      * 获取一个可以写入内容的文件 , 文件名应该携带时间戳
-     * lib_log_logs.__23154145234524__2021-12-10_11-13-06-999.txt
-     * lib_log_crash.__23154145234524__2021-12-10_11-13-06-999.txt
+     * 如果是新的一天即使没有超过最大文件的文件容量 , 也会新建日志文件
+     * 23154145234524__2021-12-10_11-13-06-999.lib_log_logs.txt
+     * 23154145234524__2021-12-10_11-13-06-999.lib_log_crash.txt
      *
      * @param folderPath String
      * @param fileName String
@@ -147,8 +150,9 @@ internal object Utils {
         val timestampDelimiter = "__"
 
         fun File.getTimestamp(): Long = try {
-            this.name.split(timestampDelimiter)[1].toLongOrNull() ?: 0
+            this.name.split(timestampDelimiter)[0].toLongOrNull() ?: 0
         } catch (throwable: Throwable) {
+            throwable.printStackTrace()
             0
         }
 
@@ -157,7 +161,7 @@ internal object Utils {
             val timestampLong = System.currentTimeMillis()
             val timeFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS_Z", Locale.getDefault())
             val simpleTimestampStr = timeFormat.format(timestampLong)
-            return "${timestampDelimiter}${timestampLong}${timestampDelimiter}${simpleTimestampStr}"
+            return "${timestampLong}${timestampDelimiter}${simpleTimestampStr}"
         }
 
         val folder = File(folderPath)
@@ -172,22 +176,40 @@ internal object Utils {
                 val tempFile: File? = lastLogFile?.get()
                 when {
                     tempFile != null -> tempFile
-                    else -> folder.listFiles()?.maxWith(Comparator<File> { fileOne, fileTwo ->
-                        val oneTimestamp = fileOne.getTimestamp()
-                        val twoTimestamp = fileTwo.getTimestamp()
+                    else -> {
+                        val maxTimeFile = folder.listFiles()
+                            ?.maxWith(Comparator<File> { fileOne, fileTwo ->
+                                val oneTimestamp = fileOne.getTimestamp()
+                                val twoTimestamp = fileTwo.getTimestamp()
+
+                                when {
+                                    oneTimestamp < twoTimestamp -> -1
+                                    oneTimestamp == twoTimestamp -> 0
+                                    else/*oneTimestamp > twoTimestamp*/ -> 1
+                                }
+                            })
+
+                        val today = Calendar.getInstance(TimeZone.getDefault()).apply {
+                            set(Calendar.HOUR_OF_DAY, 0)
+                            set(Calendar.MINUTE, 0)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }.timeInMillis
+                        val maxTime = maxTimeFile?.getTimestamp() ?: 0
 
                         when {
-                            oneTimestamp < twoTimestamp -> -1
-                            oneTimestamp == twoTimestamp -> 0
-                            else/*oneTimestamp > twoTimestamp*/ -> 1
+                            maxTime >= today -> maxTimeFile
+                            else -> null
                         }
-                    })
+                    }
                 }
             }
         }
 
-        val newFile =
-            File(folder, String.format("%s.%s.%s", fileName, getTimestampStr(), fileExtend))
+        val newFile = File(
+            folder,
+            String.format("%s.%s", getTimestampStr(), getLogFileName(fileName, fileExtend))
+        )
 
         return when {
             maxFileSize == null -> newFile
@@ -266,7 +288,7 @@ internal object Utils {
         }
     }
 
-    fun getFiles(folderPath: String, fileName: String, fileExtend: String): MutableList<File> {
+    fun getLogFiles(folderPath: String, fileName: String, fileExtend: String): MutableList<File> {
         val files: MutableList<File> = mutableListOf()
 
         //文件夹不存在
@@ -274,22 +296,12 @@ internal object Utils {
         if (!folder.exists()) return files
 
         val filesArray = folder.listFiles { pathname: File? ->
-            return@listFiles pathname != null && pathname.name.startsWith(fileName) && pathname.name.endsWith(
-                fileExtend
-            )
+            return@listFiles pathname != null &&
+                    pathname.name.endsWith(getLogFileName(fileName, fileExtend))
         }
 
         filesArray?.let { files.addAll(it) }
 
         return files
-    }
-
-    fun getFiles(
-        folderPath: String,
-        fileName: String,
-        fileExtend: String,
-        operate: ((File) -> Unit)
-    ) {
-        getFiles(folderPath, fileName, fileExtend).forEach { logFile -> operate.invoke(logFile) }
     }
 }
