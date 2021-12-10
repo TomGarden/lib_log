@@ -289,7 +289,7 @@ object Logger {
      * @param assert 此字段 为 true 的时候 , 会抛出自定义异常
      * @param msg
      */
-    fun assertThrow(assert: Boolean, msg: Any) {
+    fun assertThrow(assert: Boolean, msg: Any? = null) {
         if (!assert) return
         val msgStr = Utils.toString(msg)
         val throwable = RuntimeException(msgStr)
