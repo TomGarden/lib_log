@@ -80,6 +80,7 @@ internal object Utils {
         return when {
             any == null -> "null"
             !any.javaClass.isArray -> any.toString()
+            any is CharSequence -> any.toString()
             any is BooleanArray -> Arrays.toString(any as BooleanArray?)
             any is ByteArray -> Arrays.toString(any as ByteArray?)
             any is CharArray -> Arrays.toString(any as CharArray?)

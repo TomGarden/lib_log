@@ -277,16 +277,27 @@ object Logger {
 
     fun assert(assert: Boolean, any: Any?) = printer.wtf(assert, any)
 
-    /**
-     * Formats the given json content and print it
-     */
+    /** Formats the given json content and print it */
     fun json(json: String?) = printer.json(json)
 
-    /**
-     * Formats the given xml content and print it
-     */
+    /** Formats the given xml content and print it */
     fun xml(xml: String?) = printer.xml(xml)
 
+    /**
+     * 断言 , 如有必要 抛出异常
+     *
+     * @param assert 此字段 为 true 的时候 , 会抛出自定义异常
+     * @param msg
+     */
+    fun assertThrow(assert: Boolean, msg: Any) {
+        if (!assert) return
+        val msgStr = Utils.toString(msg)
+        val throwable = RuntimeException(msgStr)
+        Logger.e(throwable, true, msgStr)
+        if(BuildConfig.DEBUG) {
+            throw  throwable
+        }
+    }
 
     //***************************************************************************************
     //                                 文件读取
