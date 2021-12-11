@@ -9,7 +9,6 @@ import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.logging.SimpleFormatter
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
@@ -190,17 +189,23 @@ internal object Utils {
                                 }
                             })
 
-                        val today = Calendar.getInstance(TimeZone.getDefault()).apply {
-                            set(Calendar.HOUR_OF_DAY, 0)
-                            set(Calendar.MINUTE, 0)
-                            set(Calendar.SECOND, 0)
-                            set(Calendar.MILLISECOND, 0)
-                        }.timeInMillis
-                        val maxTime = maxTimeFile?.getTimestamp() ?: 0
-
                         when {
-                            maxTime >= today -> maxTimeFile
-                            else -> null
+                            /*可能筛选出来是 crash log 文件*/
+                            maxTimeFile?.name?.contains(fileName) != true -> null
+                            else -> {
+                                val today = Calendar.getInstance(TimeZone.getDefault()).apply {
+                                    set(Calendar.HOUR_OF_DAY, 0)
+                                    set(Calendar.MINUTE, 0)
+                                    set(Calendar.SECOND, 0)
+                                    set(Calendar.MILLISECOND, 0)
+                                }.timeInMillis
+                                val maxTime = maxTimeFile.getTimestamp()
+
+                                when {
+                                    maxTime >= today -> maxTimeFile
+                                    else -> null
+                                }
+                            }
                         }
                     }
                 }
