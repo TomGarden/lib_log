@@ -19,6 +19,7 @@ class DiskLogTxtStrategy(
     override var tag: String,
     override var isLoggable: ((priority: Int, tag: String) -> Boolean),
 
+    var singleFileMaxSize: Int = 500 * 1024 /*500K averages to a 4000 lines per file*/,
     var logFilePath: () -> String?,
     private var date: Date,
     private var dateFormat: SimpleDateFormat,
@@ -30,7 +31,6 @@ class DiskLogTxtStrategy(
 
     private val SPACE = " "
     private val strBuilder = StringBuilder()
-    private val MAX_BYTES = 500 * 1024 // 500K averages to a 4000 lines per file
 
     private constructor(builder: Builder) : this(
         builder.methodCount,
@@ -39,6 +39,7 @@ class DiskLogTxtStrategy(
         builder.tag,
         builder.isLoggable,
 
+        builder.singleFileMaxSize,
         builder.logFilePath,
         builder.date,
         builder.dateFormat,
@@ -89,7 +90,7 @@ class DiskLogTxtStrategy(
         val bundle = Bundle()
         bundle.putString(WriteHandler.contentKey, strBuilder.toString())
         bundle.putString(WriteHandler.folderPathKey, logFilePath.invoke())
-        bundle.putInt(WriteHandler.maxFileSizeKey, MAX_BYTES)
+        bundle.putInt(WriteHandler.maxFileSizeKey, singleFileMaxSize)
         bundle.putBoolean(WriteHandler.withSingleFile, withSingleFile)
         message.data = bundle
         handler.sendMessage(message)
@@ -109,6 +110,7 @@ class DiskLogTxtStrategy(
         internal var isLoggable:
                 ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
 
+        internal var singleFileMaxSize: Int = 500 * 1024
         internal var logFilePath: () -> String? = { throw RuntimeException("must set logFilePath") }
         internal var handler: Handler? = null
             get() {
@@ -146,6 +148,17 @@ class DiskLogTxtStrategy(
 
         fun isLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Builder {
             this.isLoggable = isLoggable
+            return this
+        }
+
+        /** 单个日志文件最大占用磁盘空间
+         * 1KB ↔ 1024byte
+         * 1MB ↔ 1024KB
+         *
+         * @param fileMaxSize 单位 byte
+         */
+        fun singleFileMaxSize(fileMaxSize: Int): Builder {
+            singleFileMaxSize = fileMaxSize
             return this
         }
 

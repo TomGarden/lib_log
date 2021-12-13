@@ -11,14 +11,15 @@ import java.util.*
  * @property showThreadInfo Boolean [Not support]
  */
 class DiskLogCvsStrategy(
-        override var isLoggable: (priority: Int, tag: String) -> Boolean,
-        override var tag: String,
+    override var isLoggable: (priority: Int, tag: String) -> Boolean,
+    override var tag: String,
 
-        private var handler: Handler,
-        var logFilePath: () -> String,
+    var singleFileMaxSize: Int = 500 * 1024/*500K averages to a 4000 lines per file*/,
+    private var handler: Handler,
+    var logFilePath: () -> String,
 
-        private var date: Date,
-        private var dateFormat: SimpleDateFormat
+    private var date: Date,
+    private var dateFormat: SimpleDateFormat
 ) : LogStrategy(0, 0, false, tag, isLoggable) {
 
     override var methodCount: Int = 0
@@ -31,7 +32,6 @@ class DiskLogCvsStrategy(
     private val NEW_LINE: String? = System.getProperty("line.separator")
     private val NEW_LINE_REPLACEMENT = " <br> "
     private val SEPARATOR = ","
-    private val MAX_BYTES = 500 * 1024 // 500K averages to a 4000 lines per file
 
 
     companion object {
@@ -46,24 +46,26 @@ class DiskLogCvsStrategy(
 
 
     private constructor(builder: Builder) : this(
-            builder.isLoggable,
-            builder.tag,
+        builder.isLoggable,
+        builder.tag,
 
-            builder.handler!!,
-            builder.logFilePath,
+        builder.singleFileMaxSize,
+        builder.handler!!,
+        builder.logFilePath,
 
-            builder.date,
-            builder.dateFormat)
+        builder.date,
+        builder.dateFormat
+    )
 
-    override fun log(priority: Int, content: String, withSingleFile:Boolean) {
+    override fun log(priority: Int, content: String, withSingleFile: Boolean) {
 
 
         val message = Message()
         val bundle = Bundle()
         bundle.putString(WriteHandler.contentKey, logCVS(priority, content))
         bundle.putString(WriteHandler.folderPathKey, logFilePath.invoke())
-        bundle.putInt(WriteHandler.maxFileSizeKey, MAX_BYTES)
-        bundle.putBoolean(WriteHandler.withSingleFile,withSingleFile)
+        bundle.putInt(WriteHandler.maxFileSizeKey, singleFileMaxSize)
+        bundle.putBoolean(WriteHandler.withSingleFile, withSingleFile)
         message.data = bundle
         handler.sendMessage(message)
     }
@@ -108,8 +110,10 @@ class DiskLogCvsStrategy(
 
     class Builder internal constructor() {
         internal var tag: String = "PRETTY_LOGGER"
-        internal var isLoggable: ((priority: Int, tag: String) -> Boolean) = { priority, tag -> true }
+        internal var isLoggable: ((priority: Int, tag: String) -> Boolean) =
+            { priority, tag -> true }
 
+        internal var singleFileMaxSize: Int = 500 * 1024/*500K averages to a 4000 lines per file*/
         internal var logFilePath: () -> String = { Environment.getExternalStorageState() }
         internal var handler: Handler? = null
             get() {
@@ -123,7 +127,8 @@ class DiskLogCvsStrategy(
             }
 
         internal var date: Date = Date()
-        internal var dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        internal var dateFormat: SimpleDateFormat =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
 
 
         fun tag(tag: String): Builder {
@@ -133,6 +138,17 @@ class DiskLogCvsStrategy(
 
         fun isLoggable(isLoggable: ((priority: Int, tag: String) -> Boolean)): Builder {
             this.isLoggable = isLoggable
+            return this
+        }
+
+        /** 单个日志文件最大占用磁盘空间
+         * 1KB ↔ 1024byte
+         * 1MB ↔ 1024KB
+         *
+         * @param fileMaxSize 单位 byte
+         */
+        fun singleFileMaxSize(fileMaxSize: Int): Builder {
+            singleFileMaxSize = fileMaxSize
             return this
         }
 
