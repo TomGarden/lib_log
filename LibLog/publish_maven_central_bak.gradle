@@ -4,16 +4,15 @@
 
 要想手动发布就去执行 bintrayUpload.sh
 Github Actions 工作流暂未完成
-
-参考内容 : https://medium.com/@vivekvashistha/how-to-publish-android-libraries-on-maven-central-in-2023-a96e3c327008
 * */
 
 ext {
-    moduleVersionCode = 0123
-    moduleVersionName = '0.1.23'
+    moduleVersionCode = 0122
+    moduleVersionName = '0.1.22'
     moduleName = 'lib_log'
     mavenGroupId = 'io.github.tomgarden'
 }
+
 
 
 task androidSourcesJar(type: Jar) {
@@ -76,18 +75,22 @@ publishing {
     }
 }
 
+
+
+// 读取 gradle.properties 文件
+def gradlePropertiesFile = file('gradle.properties')
+def gradleProperties = new Properties()
+gradleProperties.load(new FileInputStream(gradlePropertiesFile))
+gradleProperties['signing.keyId'] = System.getenv("GPG_FOR_MAVEN_PUBLISH__keyId")
+gradleProperties['signing.password'] = System.getenv("GPG_FOR_MAVEN_PUBLISH__password")
+gradleProperties['signing.secretKeyRingFile'] = System.getenv("GPG_FOR_MAVEN_PUBLISH__secretKeyRingFile")
+gradleProperties.store(gradlePropertiesFile.newWriter(), null)
+
 // 配置 GPG 签名
 signing {
-
-    def securityKeyPath = System.getenv("GPG_FOR_MAVEN_PUBLISH__privateKeyFile")
-    def securityKeyFile = new File(securityKeyPath)
-    useInMemoryPgpKeys(
-            System.getenv("GPG_FOR_MAVEN_PUBLISH__keyId"),
-            securityKeyFile.text,
-            System.getenv("GPG_FOR_MAVEN_PUBLISH__password")
-    )
-
+    //useGpgCmd()
     sign publishing.publications.gpr /* 与 gpr(MavenPublication) 对应 */
+    //useGpgCmd("--pinentry-mode", "loopback")
 }
 
 
@@ -113,8 +116,6 @@ task testTask {
 //../gradlew clean
 //../gradlew build
 //../gradlew publish
-
-//../gradlew publishToMavenLocal  // 到这里查看你生成的文件 /Users/tom/.m2/repository
 //一次执行所有
 //./gradlew clean build publish
 //./gradlew clean build publishToMavenLocal

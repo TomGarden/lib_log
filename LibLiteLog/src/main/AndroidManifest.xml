@@ -1,5 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.tomgarden.lib.lite_log">
-
-    /
-</manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" />
