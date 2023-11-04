@@ -177,17 +177,16 @@ internal object Utils {
                 when {
                     tempFile != null -> tempFile
                     else -> {
-                        val maxTimeFile = folder.listFiles()
-                            ?.maxWith(Comparator<File> { fileOne, fileTwo ->
-                                val oneTimestamp = fileOne.getTimestamp()
-                                val twoTimestamp = fileTwo.getTimestamp()
+                        val maxTimeFile = folder.listFiles()?.maxWithOrNull { fileOne, fileTwo ->
+                            val oneTimestamp = fileOne.getTimestamp()
+                            val twoTimestamp = fileTwo.getTimestamp()
 
-                                when {
-                                    oneTimestamp < twoTimestamp -> -1
-                                    oneTimestamp == twoTimestamp -> 0
-                                    else/*oneTimestamp > twoTimestamp*/ -> 1
-                                }
-                            })
+                            when {
+                                oneTimestamp < twoTimestamp -> -1
+                                oneTimestamp == twoTimestamp -> 0
+                                else/*oneTimestamp > twoTimestamp*/ -> 1
+                            }
+                        }
 
                         when {
                             /*可能筛选出来是 crash log 文件*/
