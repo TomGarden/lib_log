@@ -11,21 +11,14 @@
 ```Groovy
 //ModuleName/build.gradle
 dependencies {
-    //lastVersion : https://github.com/TomGarden/lib_log/packages/316828
-    implementation 'io.github.tomgarden:lib_log:+'
+    //lastVersion : https://central.sonatype.com/artifact/io.github.tomgarden/lib_log/overview
+    implementation 'io.github.tomgarden:lib_log:0.1.22'
 }
 
 //ModuleName/build.gradle   OR    ProjectName/build.gradle
 repositories {
     maven {
         url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
-
-        credentials {
-            //不限的 github 账户名
-            username = System.getenv("TOMGARADEN_USERNAME")
-            //与 github 账户名成对的 具有 read:packages 权限的 token
-            password = System.getenv("TOMGARADEN_READ_PACKAGES_TOKEN")
-        }
     }
 }
 

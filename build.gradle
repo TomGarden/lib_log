@@ -2,9 +2,22 @@
 buildscript {
 
     ext{
-        kotlin_version = '1.6.21'
+        kotlin_version = '1.9.10'
 
         targetSdkVersion = 29
+
+        minSdkVersion = 14
+        compileSdk = 34
+        targetSdkVersion = 34
+
+        kotlinx_coroutines_android = '1.7.3'
+        appcompat = '1.6.1'
+        core_ktx = '1.12.0'
+        junit = '4.13.2'
+        ext_junit = '1.1.5'
+        runner = '1.5.2'
+        espresso_core = '3.5.1'
+        constraintlayout = '2.1.4'
     }
 
     repositories {

@@ -100,8 +100,6 @@ android {
 
 task testTask {
     //测试 gradle 语法
-//    println(System.getenv("TOMGARADEN_USERNAME"))
-//    println(System.getenv("TOMGARADEN_WRITE_PACKAGES_TOKEN"))
 //    println(System.getenv("MAVEN_USERNAME"))
 //    println(System.getenv("MAVEN_PASSWORD"))
 //    println("$buildDir/outputs/aar/LibLog-release.aar")

@@ -3,10 +3,10 @@ package io.github.tomgaren.example.log
 import android.content.Intent
 import android.os.Bundle
 import android.os.Process
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 .logFilePath { return@logFilePath externalCacheDir?.path?.let { "${it}/logDir" } }
                 .build())
 
-        btnPrintLog.setOnClickListener {
+        findViewById<View>(R.id.btnPrintLog).setOnClickListener {
 
             //You needn't any init option
             Logger.e("You needn't any init option , LibLog has def config .")
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnCoroutinesPrintLog.setOnClickListener {
+        findViewById<View>(R.id.btnCoroutinesPrintLog).setOnClickListener {
             GlobalScope.launch {
 
                 delay(500)
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnCoroutinesClearLogFile.setOnClickListener {
+        findViewById<View>(R.id.btnCoroutinesClearLogFile).setOnClickListener {
             GlobalScope.launch {
 
                 // 在 LogCat 中过滤文字 "删除文件开始" 可以确定协程操作没有问题
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnSubThreadPrintLog.setOnClickListener {
+        findViewById<View>(R.id.btnSubThreadPrintLog).setOnClickListener {
 
 
             val thread1 = object : Thread() {
@@ -199,7 +199,7 @@ class MainActivity : AppCompatActivity() {
             thread2.start()
         }
 
-        btnSubThreadClearLogFile.setOnClickListener {
+        findViewById<View>(R.id.btnSubThreadClearLogFile).setOnClickListener {
 
             val thread3 = object : Thread() {
                 override fun run() {
@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
             thread3.start()
         }
 
-        btnFormatLog.setOnClickListener {
+        findViewById<View>(R.id.btnFormatLog).setOnClickListener {
             try {
                 val args = arrayOf<Any>(123, 123.123, "wer")
 
@@ -232,16 +232,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnLiteLog.setOnClickListener {
+        findViewById<View>(R.id.btnLiteLog).setOnClickListener {
             startActivity(Intent(this, LiteLogActivity::class.java))
         }
 
-        btn_auto_collapse.setOnClickListener {
+        findViewById<View>(R.id.btn_auto_collapse).setOnClickListener {
             val string = "F\nF\nF\nF\n"
             Logger.e(string)
         }
 
-        btn_auto_expand.setOnClickListener {
+        findViewById<View>(R.id.btn_auto_expand).setOnClickListener {
 
             whiteList()
             val string = "F\nF\nF\nF\n"

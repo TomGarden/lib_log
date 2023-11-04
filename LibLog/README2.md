@@ -109,21 +109,7 @@ __至此依赖包已经上传到 GitHub Packages 了__
 //此节点位于 ModuleName/build.gradle
 dependencies {
     //implementation project(path: ':LibLog')
-    implementation 'io.github.tomgarden:lib_log:+'
-}
-
-//此节点位于 ModuleName/build.gradle , 或者 ProjectName/build.gradle
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
-        url = uri("https://maven.pkg.github.com/TomGarden/lib_pickcolor")
-        credentials {
-            //不限的 github 账户名
-            username = System.getenv("TOMGARADEN_USERNAME")
-            //与 github 账户名成对的 具有 read:packages 权限的 token
-            password = System.getenv("TOMGARADEN_READ_PACKAGES_TOKEN")
-        }
-    }
+    implementation 'io.github.tomgarden:lib_log:0.1.22'
 }
 ```
 

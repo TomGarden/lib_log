@@ -1,9 +1,9 @@
 package io.github.tomgaren.example.log
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import io.github.tomgarden.lib.lite_log.tom_logger.TomLogger
-import kotlinx.android.synthetic.main.activity_lite_log.*
 
 /**
  * describe :
@@ -17,13 +17,15 @@ class LiteLogActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_lite_log)
 
-        btnPrintLog.setOnClickListener {
+
+        findViewById<View>(R.id.btnPrintLog).setOnClickListener {
             TomLogger.INSTANCE.e("errMessage")
             TomLogger.INSTANCE.tempJustMsg().e("TomLogger.INSTANCE.tempJustMsg().e")
-            TomLogger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false).e("TomLogger.INSTANCE.tempJustMsg().e")
+            TomLogger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false)
+                .e("TomLogger.INSTANCE.tempJustMsg().e")
         }
 
-        btnCoroutinesPrintLog?.setOnClickListener { test1() }
+        findViewById<View>(R.id.btnCoroutinesPrintLog)?.setOnClickListener { test1() }
     }
 
     fun test1() {
