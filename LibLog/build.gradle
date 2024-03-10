@@ -5,6 +5,11 @@ plugins {
     id 'signing'
 }
 
+def GROUP_ID = 'com.github.TomGarden'
+def VERSION = '0.1.32'
+
+group = "$GROUP_ID"
+version = "$VERSION"
 
 //apply from: 'publish_github_packages.gradle'
 //apply from: 'publish_maven_central.gradle'
@@ -45,4 +50,21 @@ dependencies {
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+}
+
+
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = "$GROUP_ID"
+                artifactId = 'lib_log'
+                version = "$VERSION"
+            }
+        }
+    }
 }

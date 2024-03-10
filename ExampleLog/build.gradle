@@ -45,7 +45,8 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
 
-    implementation project(path: ':LibLog')
+//    implementation project(path: ':LibLog')
+    implementation 'com.github.TomGarden:lib_log:v0.1.32'
     implementation project(path: ':LibLiteLog')
     //implementation 'io.github.tomgarden:lib_log:0.1.22'
     //implementation 'io.github.tomgarden:lib_log:0.1.13'
