@@ -9,8 +9,8 @@ Github Actions 工作流暂未完成
 * */
 
 ext {
-    moduleVersionCode = 0123
-    moduleVersionName = '0.1.23'
+    moduleVersionCode = 0125
+    moduleVersionName = '0.1.25'
     moduleName = 'lib_log'
     mavenGroupId = 'io.github.tomgarden'
 }
@@ -110,9 +110,9 @@ task testTask {
 //分步执行
 //../gradlew clean
 //../gradlew build
-//../gradlew publish
+//../gradlew publish              // 发布到远程仓库
 
-//../gradlew publishToMavenLocal  // 到这里查看你生成的文件 /Users/tom/.m2/repository
+//../gradlew publishToMavenLocal  // 今发布到本地, 到这里查看你生成的文件 /Users/tom/.m2/repository
 //一次执行所有
 //./gradlew clean build publish
 //./gradlew clean build publishToMavenLocal

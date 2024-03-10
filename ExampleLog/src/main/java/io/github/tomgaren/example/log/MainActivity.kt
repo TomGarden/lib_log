@@ -10,6 +10,7 @@ import io.github.tomgarden.lib.log.Logger
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -107,14 +108,15 @@ class MainActivity : AppCompatActivity() {
 
                 delay(1000)
 
-                Logger.getCrashLogFiles().forEach { crashFile ->
+                for (crashFile: File in Logger.getCrashLogFiles()) {
                     System.out.println(Logger.readFile(crashFile.path))
                     crashFile.delete()
                 }
             }
 
             System.out.println(Logger.getCrashLogFiles().size)
-            Logger.getCrashLogFiles().forEach { crashFile ->
+
+            for (crashFile: File in Logger.getCrashLogFiles()) {
                 System.out.println(Logger.readFile(crashFile.path))
                 crashFile.delete()
             }

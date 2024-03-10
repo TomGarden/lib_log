@@ -303,7 +303,7 @@ object Logger {
         val throwable = RuntimeException(msgStr)
         Logger.e(throwable, true, msgStr)
         if (enableThrow) {
-            throw  throwable
+            throw throwable
         }
     }
 
@@ -341,7 +341,7 @@ object Logger {
         getLogFiles(WriteHandler.normalLogName, WriteHandler.fileExtend)
 
     fun clearLogFiles() {
-        getNormalLogFiles().forEach { logFile -> logFile.delete() }
-        getCrashLogFiles().forEach { logFile -> logFile.delete() }
+        for (logFile: File in getNormalLogFiles()) logFile.delete()
+        for (logFile: File in getCrashLogFiles()) logFile.delete()
     }
 }

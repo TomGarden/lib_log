@@ -2,7 +2,9 @@
 buildscript {
 
     ext{
-        kotlin_version = '1.9.10'
+        kotlin_version = '1.9.20'
+//        kotlin_version = '1.9.10'
+//        kotlin_version = '1.7.1'
 
         targetSdkVersion = 29
 
@@ -38,6 +40,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
