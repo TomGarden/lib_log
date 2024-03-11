@@ -11,15 +11,13 @@
 ```Groovy
 //ModuleName/build.gradle
 dependencies {
-    //lastVersion : https://central.sonatype.com/artifact/io.github.tomgarden/lib_log/overview
-    implementation 'io.github.tomgarden:lib_log:0.1.22'
+    //lastVersion : https://jitpack.io/private#TomGarden/lib_log
+    implementation 'com.github.TomGarden:lib_log:v0.1.32'
 }
 
 //ModuleName/build.gradle   OR    ProjectName/build.gradle
 repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/TomGarden/lib_log")
-    }
+   maven { url "https://jitpack.io" }
 }
 
 ```
