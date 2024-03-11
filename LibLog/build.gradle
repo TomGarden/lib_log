@@ -5,6 +5,11 @@ plugins {
     id 'signing'
 }
 
+def GROUP_ID = 'com.github.TomGarden'
+def VERSION = '0.1.32'
+
+group = "$GROUP_ID"
+version = "$VERSION"
 
 //apply from: 'publish_github_packages.gradle'
 //apply from: 'publish_maven_central.gradle'
@@ -48,11 +53,7 @@ dependencies {
 }
 
 
-def GROUP_ID = 'com.github.TomGarden'
-def VERSION = '0.1.31'
 
-group = "$GROUP_ID"
-version = "$VERSION"
 
 afterEvaluate {
     publishing {
