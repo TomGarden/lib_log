@@ -6,8 +6,8 @@ plugins {
 }
 
 
-def GROUP_ID = 'com.github.jitpack'
-def VERSION = '0.1.27'
+def GROUP_ID = 'com.github.TomGarden'
+def VERSION = '0.1.28'
 
 group = "$GROUP_ID"
 version = "$VERSION"
