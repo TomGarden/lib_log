@@ -3,7 +3,7 @@ package io.github.tomgaren.example.log
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import io.github.tomgarden.lib.lite_log.tom_logger.TomLogger
+import io.github.tomgarden.lib.lite_log.TomLogger
 
 /**
  * describe :

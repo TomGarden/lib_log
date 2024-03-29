@@ -1,4 +1,4 @@
-package io.github.tomgarden.lib.lite_log.tom_logger;
+package io.github.tomgarden.lib.lite_log;
 
 /**
  * 此类实现的实际做法是收集即将打印的所有信息, 然后交给 LogStrategy 完成真正的打印动作

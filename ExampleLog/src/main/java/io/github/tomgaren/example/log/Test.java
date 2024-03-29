@@ -1,6 +1,6 @@
 package io.github.tomgaren.example.log;
 
-import io.github.tomgarden.lib.lite_log.tom_logger.TomLogger;
+import io.github.tomgarden.lib.lite_log.TomLogger;
 import io.github.tomgarden.lib.log.Logger;
 
 /**

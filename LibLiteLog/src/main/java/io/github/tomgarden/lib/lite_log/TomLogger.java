@@ -1,4 +1,4 @@
-package io.github.tomgarden.lib.lite_log.tom_logger;
+package io.github.tomgarden.lib.lite_log;
 
 /**
  * describe : 为了在 AOSP 中阅读代码写的工具类 , 刚开始用 kotlin 后来发现项目环境不支持 , 所以 java 重写一次

@@ -1,4 +1,4 @@
-package io.github.tomgarden.lib.lite_log.tom_logger;
+package io.github.tomgarden.lib.lite_log;
 
 /**
  * A proxy interface to enable additional operations.
