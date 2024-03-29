@@ -43,13 +43,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
-    implementation "androidx.appcompat:appcompat:$appcompat"
-    implementation "androidx.core:core-ktx:$core_ktx"
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
+//    implementation "androidx.core:core-ktx:$core_ktx"
+//    implementation "androidx.appcompat:appcompat:$appcompat"
+//    testImplementation "junit:junit:$junit"
+//    androidTestImplementation "androidx.test:runner:$runner"
+//    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
 }
 
 

@@ -28,11 +28,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:$core_ktx"
-    implementation "androidx.appcompat:appcompat:$appcompat"
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test.ext:junit:$ext_junit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation "androidx.core:core-ktx:$core_ktx"
+//    implementation "androidx.appcompat:appcompat:$appcompat"
+//    testImplementation "junit:junit:$junit"
+//    androidTestImplementation "androidx.test.ext:junit:$ext_junit"
+//    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
 
 }
