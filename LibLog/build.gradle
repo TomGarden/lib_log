@@ -77,7 +77,7 @@ afterEvaluate {
 
                 // 添加源码发布
                 //artifact andSourcesJar
-                artifact file("$buildDir/libs/LibLog-$VERSION-sources.jar")
+                artifact file("$buildDir/libs/${project.name}-$VERSION-sources.jar")
             }
         }
     }
