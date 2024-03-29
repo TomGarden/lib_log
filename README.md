@@ -12,7 +12,7 @@
 //ModuleName/build.gradle
 dependencies {
     //lastVersion : https://jitpack.io/private#TomGarden/lib_log
-    implementation 'com.github.TomGarden:lib_log:v0.1.32'
+    implementation 'com.github.TomGarden:lib_log:v0.1.33'
 }
 
 //ModuleName/build.gradle   OR    ProjectName/build.gradle
