@@ -1,9 +1,10 @@
-package io.github.tomgarden.lib.lite_log;
+package io.github.tomgarden.lib.lite_log.function;
+
 
 /**
  * A function that takes 2 arguments.
  */
-public interface Function2<P1, P2, R> {
+public interface Function2<P1, P2, R> extends Function<R> {
     /**
      * Invokes the function with the specified arguments.
      */

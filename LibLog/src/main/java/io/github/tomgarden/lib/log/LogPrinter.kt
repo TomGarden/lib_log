@@ -184,11 +184,9 @@ internal class LogPrinter : Printer {
         message: String,
         withSingleFile: Boolean
     ) {
-        logStrategy?.let {
-            if (logStrategy.isLoggable(priority, logStrategy.tag)) {
-                logStrategy.log(priority, message, withSingleFile)
-            }
-        }
+        logStrategy ?: return
+        if (!logStrategy.isLoggable(priority, logStrategy.tag)) return
+        logStrategy.log(priority, message, withSingleFile)
     }
 
     /**

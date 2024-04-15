@@ -1,11 +1,13 @@
 package io.github.tomgarden.lib.lite_log;
 
+import io.github.tomgarden.lib.lite_log.function.Function2;
+
 /**
  * Determines destination target for the logs such as Disk, Logcat etc.
  * <p>
  * 确定日志目标,诸如 : 磁盘/日志
  */
-public abstract class TomLogStrategy {
+public abstract class LogStrategy {
 
     /*控制函数栈深度*/
     protected int methodCount;

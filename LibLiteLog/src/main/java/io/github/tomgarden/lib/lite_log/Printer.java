@@ -9,53 +9,57 @@ package io.github.tomgarden.lib.lite_log;
  * <p>
  * 包含所有的日志用法
  */
-public abstract class TomPrinter {
+public abstract class Printer {
 
     /*默认控制台日志策略*/
-    TomLogStrategy defLogcatStrategy = null;
+    private LogStrategy defLogcatStrategy = null;
 
     /*临时控制台日志策略*/
-    TomLogStrategy temporaryLogcatStrategy = null;
+    private LogStrategy temporaryLogcatStrategy = null;
 
     /*默认磁盘日志策略*/
-    TomLogStrategy defDiskStrategy = null;
+    private LogStrategy defDiskStrategy = null;
 
     /*临时磁盘日志策略*/
-    TomLogStrategy temporaryDiskStrategy = null;
+    private LogStrategy temporaryDiskStrategy = null;
 
-    public TomLogStrategy getDefLogcatStrategy() {
+
+
+    public LogStrategy getDefLogcatStrategy() {
         return defLogcatStrategy;
     }
 
-    public void setDefLogcatStrategy(TomLogStrategy defLogcatStrategy) {
+    public void setDefLogcatStrategy(LogStrategy defLogcatStrategy) {
         this.defLogcatStrategy = defLogcatStrategy;
     }
 
-    public TomLogStrategy getTemporaryLogcatStrategy() {
+    public LogStrategy getTemporaryLogcatStrategy() {
         return temporaryLogcatStrategy;
     }
 
-    public void setTemporaryLogcatStrategy(TomLogStrategy temporaryLogcatStrategy) {
+    public void setTemporaryLogcatStrategy(LogStrategy temporaryLogcatStrategy) {
         this.temporaryLogcatStrategy = temporaryLogcatStrategy;
     }
 
-    public TomLogStrategy getDefDiskStrategy() {
+    public LogStrategy getDefDiskStrategy() {
         return defDiskStrategy;
     }
 
-    public void setDefDiskStrategy(TomLogStrategy defDiskStrategy) {
+    public void setDefDiskStrategy(LogStrategy defDiskStrategy) {
         this.defDiskStrategy = defDiskStrategy;
     }
 
-    public TomLogStrategy getTemporaryDiskStrategy() {
+    public LogStrategy getTemporaryDiskStrategy() {
         return temporaryDiskStrategy;
     }
 
-    public void setTemporaryDiskStrategy(TomLogStrategy temporaryDiskStrategy) {
+    public void setTemporaryDiskStrategy(LogStrategy temporaryDiskStrategy) {
         this.temporaryDiskStrategy = temporaryDiskStrategy;
     }
 
-    abstract TomLogStrategy unNullTemporaryLogcatStrategy();
+    abstract LogStrategy unNullTemporaryLogcatStrategy();
+
+    abstract public LogStrategy unNullTemporaryDiskStrategy();
 
     abstract void d(String message, Object... args);
 

@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="liteLog" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnPrintLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="print　Log, 打印日志" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="liteLog 磁盘权限 , 手动授予下 , 否则本地日志无法打印" />
 
-    <Button
-        android:id="@+id/btnCoroutinesPrintLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="[coroutines]   Print 　Log , 协程死循环打印日志" />
+        <Button
+            android:id="@+id/btnPrintLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="print　Log, 打印日志" />
 
-    <Button
-        android:id="@+id/btnCoroutinesClearLogFile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="[[coroutines]] clear　Log File 协程删除日志文件" />
+        <Button
+            android:id="@+id/btnCoroutinesPrintLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[coroutines]   Print 　Log , 协程死循环打印日志" />
 
-    <Button
-        android:id="@+id/btnSubThreadPrintLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="[sub Thread]   Print 　Log , 线程死循环打印日志" />
+        <Button
+            android:id="@+id/btnCoroutinesClearLogFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[[coroutines]] clear　Log File 协程删除日志文件" />
 
-    <Button
-        android:id="@+id/btnSubThreadClearLogFile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="[[sub Thread]] clear　Log File, 线程删除日志文件" />
+        <Button
+            android:id="@+id/btnSubThreadPrintLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[sub Thread]   Print 　Log , 线程死循环打印日志" />
 
-    <Button
-        android:id="@+id/btnFormatLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="打印格式化参数日志" />
+        <Button
+            android:id="@+id/btnSubThreadClearLogFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[[sub Thread]] clear　Log File, 线程删除日志文件" />
+
+        <Button
+            android:id="@+id/btnFormatLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="打印格式化参数日志" />
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

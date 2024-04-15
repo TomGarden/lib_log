@@ -82,16 +82,14 @@ object Logger {
     /*check disk log file path*/
     fun getDefDiskStrategyLogFilePath(): String? {
         val defDiskStrategy = printer.defDiskStrategy as DiskLogTxtStrategy?
-        val path =
-            defDiskStrategy?.let { defDiskStrategy ->
-                defDiskStrategy.logFilePath.invoke()
-            } ?: "Not setDefDiskStrategy"
+        val path = defDiskStrategy?.logFilePath?.invoke() ?: "Not setDefDiskStrategy"
 
         return path
     }
 
-    fun setDefDiskStrategy(defDiskStrategy: LogStrategy?) {
+    fun setDefDiskStrategy(defDiskStrategy: LogStrategy?): Logger {
         printer.defDiskStrategy = defDiskStrategy
+        return this
     }
 
     fun defDiskMethodCount(methodCount: Int): Logger =

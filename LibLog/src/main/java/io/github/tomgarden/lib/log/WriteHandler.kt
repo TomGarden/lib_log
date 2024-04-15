@@ -35,7 +35,7 @@ class WriteHandler(looper: Looper) : Handler(looper) {
             /*避免异常发生的时候造成死循环*/
             Logger.setDefDiskStrategy(null)
             Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
-                .e("invalid log file path : '$folderPath'")
+                .e("invalid log file path : '$folderPath' ; DefDiskStrategy has bin set NULL")
             return
         }
         val maxFileSize = msg.data.getInt(maxFileSizeKey)

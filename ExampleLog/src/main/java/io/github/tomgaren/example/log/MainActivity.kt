@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Process
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
 import kotlinx.coroutines.GlobalScope
@@ -15,6 +16,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val getAppDefLogPath get()= externalCacheDir?.path ?: Constant.defPath
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,16 +25,14 @@ class MainActivity : AppCompatActivity() {
         val justLogCat = "If you just want log to LogCat , you needn't any init"
         Logger.i(justLogCat)
 
+        //看起来我们不能成功的创建本地文件进而将日志写入 , 我们需要了解这背后的原因解决它
 
         val version = "${BuildConfig.VERSION_NAME}[${BuildConfig.VERSION_CODE}]"
         val wantLogCatAndLogDisk = "Log to LogCat & Log to disk , you need init Disk log format"
         val diskLogTxtStrategy =
             DiskLogTxtStrategy.newBuilder()
                 .tag(version)
-                .logFilePath {
-                    val path = externalCacheDir?.path?.let { "${it}/logDir" }
-                    return@logFilePath path
-                }
+                .logFilePath { return@logFilePath "${getAppDefLogPath}/logDir" }
                 .build()
         Logger.setDefDiskStrategy(diskLogTxtStrategy)
         Logger.d(wantLogCatAndLogDisk)
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             DiskLogTxtStrategy
                 .newBuilder()
                 .tag(version)
-                .logFilePath { return@logFilePath externalCacheDir?.path?.let { "${it}/logDir" } }
+                .logFilePath { return@logFilePath "${getAppDefLogPath}/logDir" }
                 .build())
 
         findViewById<View>(R.id.btnPrintLog).setOnClickListener {
@@ -89,13 +90,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-            Logger.e("this msg with locale log file")
+            //Logger.setDefDiskStrategy(DiskLogTxtStrategy.newBuilder().logFilePath {  })
+            Logger.e("if we first init diskStrategy , this msg with locale log file")
             Logger.e(RuntimeException("sd"), true, "sdf")
 
-            val diskLogTxtStrategy: DiskLogTxtStrategy =
-                Logger.getDefDiskStrategy() as DiskLogTxtStrategy
-            val localFilePath = diskLogTxtStrategy.logFilePath.invoke()
+            val diskLogTxtStrategy: DiskLogTxtStrategy? =
+                Logger.getDefDiskStrategy() as? DiskLogTxtStrategy
+            val localFilePath = diskLogTxtStrategy?.logFilePath?.invoke()
             Logger.e(true, "You can get locale log file path :$localFilePath")
 
 

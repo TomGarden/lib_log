@@ -2,6 +2,8 @@ package io.github.tomgarden.lib.lite_log;
 
 import android.util.Log;
 
+import io.github.tomgarden.lib.lite_log.function.Function2;
+
 
 /**
  * LogCat implementation for [LogStrategy]
@@ -9,7 +11,7 @@ import android.util.Log;
  * This simply prints out all logs to Logcat by using standard [Log] class.
  * 通过使用标准 Log 将日志打印到 AndroidStudio 日志工具窗口
  */
-class TomLogcatLogStrategy extends TomLogStrategy {
+class LogcatLogStrategy extends LogStrategy {
 
 
     String DEFAULT_TAG = "NO_TAG";
@@ -39,7 +41,7 @@ class TomLogcatLogStrategy extends TomLogStrategy {
     String BOTTOM_BORDER = BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
     String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
 
-    public TomLogcatLogStrategy(
+    public LogcatLogStrategy(
             int methodCount,
             int methodOffset,
             boolean showThreadInfo,
@@ -54,8 +56,8 @@ class TomLogcatLogStrategy extends TomLogStrategy {
     }
 
 
-    static TomLogcatLogStrategy.Builder newBuilder() {
-        return new TomLogcatLogStrategy.Builder();
+    static LogcatLogStrategy.Builder newBuilder() {
+        return new LogcatLogStrategy.Builder();
     }
 
     /**
@@ -186,12 +188,12 @@ class TomLogcatLogStrategy extends TomLogStrategy {
      * @return the stack offset
      */
     private int getStackOffset(StackTraceElement[] trace) {
-        TomUtils.checkNotNull(trace);
+        Utils.checkNotNull(trace);
 
         for (int i = MIN_STACK_OFFSET; i < trace.length; i++) {
             StackTraceElement e = trace[i];
             String name = e.getClassName();
-            if (!name.equals(TomLogPrinter.class.getName()) && !name.equals(TomLogger.class.getName())) {
+            if (!name.equals(LogPrinter.class.getName()) && !name.equals(Logger.class.getName())) {
                 return --i;
             }
         }
@@ -211,33 +213,33 @@ class TomLogcatLogStrategy extends TomLogStrategy {
                     }
                 };
 
-        public TomLogcatLogStrategy.Builder methodCount(int methodCount) {
+        public LogcatLogStrategy.Builder methodCount(int methodCount) {
             this.methodCount = methodCount;
             return this;
         }
 
-        TomLogcatLogStrategy.Builder methodOffset(int methodOffset) {
+        LogcatLogStrategy.Builder methodOffset(int methodOffset) {
             this.methodOffset = methodOffset;
             return this;
         }
 
-        TomLogcatLogStrategy.Builder showThreadInfo(boolean showThreadInfo) {
+        LogcatLogStrategy.Builder showThreadInfo(boolean showThreadInfo) {
             this.showThreadInfo = showThreadInfo;
             return this;
         }
 
-        TomLogcatLogStrategy.Builder tag(String tag) {
+        LogcatLogStrategy.Builder tag(String tag) {
             this.tag = tag;
             return this;
         }
 
-        TomLogcatLogStrategy.Builder isLoggable(Function2<Integer, String, Boolean> isLoggable) {
+        LogcatLogStrategy.Builder isLoggable(Function2<Integer, String, Boolean> isLoggable) {
             this.isLoggable = isLoggable;
             return this;
         }
 
-        TomLogcatLogStrategy build() {
-            return new TomLogcatLogStrategy(
+        LogcatLogStrategy build() {
+            return new LogcatLogStrategy(
                     this.methodCount,
                     this.methodOffset,
                     this.showThreadInfo,

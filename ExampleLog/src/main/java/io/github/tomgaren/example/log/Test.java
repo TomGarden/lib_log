@@ -1,7 +1,6 @@
 package io.github.tomgaren.example.log;
 
-import io.github.tomgarden.lib.lite_log.TomLogger;
-import io.github.tomgarden.lib.log.Logger;
+import io.github.tomgarden.lib.lite_log.Logger;
 
 /**
  * describe :
@@ -11,6 +10,6 @@ import io.github.tomgarden.lib.log.Logger;
  */
 public class Test {
     public void test() {
-        TomLogger.INSTANCE.i("msg");
+        Logger.INSTANCE.i("msg");
     }
 }

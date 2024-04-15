@@ -3,7 +3,9 @@ package io.github.tomgaren.example.log
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import io.github.tomgarden.lib.lite_log.TomLogger
+import io.github.tomgarden.lib.lite_log.DiskLogTxtStrategy
+import io.github.tomgarden.lib.lite_log.Logger
+
 
 /**
  * describe :
@@ -18,10 +20,20 @@ class LiteLogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lite_log)
 
 
+
+        Logger.INSTANCE.defDiskStrategy = DiskLogTxtStrategy.Builder()
+            .logFilePath {
+                val path = externalCacheDir?.path ?: Constant.defPath
+                return@logFilePath "${path}/liteLogDir"
+            }
+            .build()
+
+
         findViewById<View>(R.id.btnPrintLog).setOnClickListener {
-            TomLogger.INSTANCE.e("errMessage")
-            TomLogger.INSTANCE.tempJustMsg().e("TomLogger.INSTANCE.tempJustMsg().e")
-            TomLogger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false)
+            io.github.tomgarden.lib.log.Logger.w("check local log file path >>: %s", Logger.INSTANCE.defDiskStrategyLogFilePath ?: "err")
+            Logger.INSTANCE.e("errMessage")
+            Logger.INSTANCE.tempJustMsg().e("TomLogger.INSTANCE.tempJustMsg().e")
+            Logger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false)
                 .e("TomLogger.INSTANCE.tempJustMsg().e")
         }
 
@@ -42,7 +54,7 @@ class LiteLogActivity : AppCompatActivity() {
 
 
         //TomLogger.defLogcatMethodCount(20)
-        TomLogger.INSTANCE
+        Logger.INSTANCE
             .tempLogcatMethodCount(20)
             .e("ActivityStackSupervisor.startSpecificActivityLocked")
 

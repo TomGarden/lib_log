@@ -3,30 +3,30 @@ package io.github.tomgarden.lib.lite_log;
 /**
  * 此类实现的实际做法是收集即将打印的所有信息, 然后交给 LogStrategy 完成真正的打印动作
  */
-public class TomLogPrinter extends TomPrinter {
+public class LogPrinter extends Printer {
 
-    public TomLogPrinter() {
-        setDefLogcatStrategy(TomLogcatLogStrategy.newBuilder().build());
+    public LogPrinter() {
+        setDefLogcatStrategy(LogcatLogStrategy.newBuilder().build());
     }
 
-    public TomLogStrategy unNullTemporaryLogcatStrategy() {
-        TomLogStrategy logStrategy;
+    public LogStrategy unNullTemporaryLogcatStrategy() {
+        LogStrategy logStrategy;
 
-        TomLogStrategy temporaryLogcatStrategy = getTemporaryLogcatStrategy();
-        TomLogStrategy defLogcatStrategy = getDefLogcatStrategy();
+        LogStrategy temporaryLogcatStrategy = getTemporaryLogcatStrategy();
+        LogStrategy defLogcatStrategy = getDefLogcatStrategy();
 
         if (temporaryLogcatStrategy == null) {
             if (defLogcatStrategy == null) {
-                logStrategy = TomLogcatLogStrategy.newBuilder().build();
+                logStrategy = LogcatLogStrategy.newBuilder().build();
             } else {
-                logStrategy = TomLogcatLogStrategy.newBuilder()
+                logStrategy = LogcatLogStrategy.newBuilder()
                         .methodCount(defLogcatStrategy.methodCount)
                         .methodOffset(defLogcatStrategy.methodOffset)
                         .showThreadInfo(defLogcatStrategy.showThreadInfo)
                         .tag(defLogcatStrategy.tag)
                         .build();
             }
-            super.temporaryLogcatStrategy = logStrategy;
+            setTemporaryLogcatStrategy(logStrategy);
         } else {
             logStrategy = temporaryLogcatStrategy;
         }
@@ -35,53 +35,80 @@ public class TomLogPrinter extends TomPrinter {
         return logStrategy;
     }
 
+    @Override
+    public LogStrategy unNullTemporaryDiskStrategy() {
+        LogStrategy logStrategy;
+
+        LogStrategy temporaryDiskStrategy = getTemporaryDiskStrategy();
+        LogStrategy defDiskStrategy = getDefDiskStrategy();
+
+        if (temporaryDiskStrategy == null) {
+            if (defDiskStrategy == null) {
+                logStrategy = LogcatLogStrategy.newBuilder().build();
+            } else {
+                logStrategy = LogcatLogStrategy.newBuilder()
+                        .methodCount(defDiskStrategy.methodCount)
+                        .methodOffset(defDiskStrategy.methodOffset)
+                        .showThreadInfo(defDiskStrategy.showThreadInfo)
+                        .tag(defDiskStrategy.tag)
+                        .build();
+            }
+            setTemporaryDiskStrategy(logStrategy);
+        } else {
+            logStrategy = temporaryDiskStrategy;
+        }
+
+
+        return logStrategy;
+    }
+
     public void d(String message, Object... args) {
-        log(TomLogger.DEBUG, null, false, message, args);
+        log(Logger.DEBUG, null, false, message, args);
     }
 
     public void d(Object any) {
-        log(TomLogger.DEBUG, null, false, TomUtils.toString(any));
+        log(Logger.DEBUG, null, false, Utils.toString(any));
     }
 
     @Override
     public void e(Boolean withSingleFile, String message, Object... args) {
-        log(TomLogger.ERROR, null, withSingleFile, message, args);
+        log(Logger.ERROR, null, withSingleFile, message, args);
     }
 
     @Override
     public void e(Throwable throwable, Boolean withSingleFile, String message, Object... args) {
-        log(TomLogger.ERROR, throwable, withSingleFile, message, args);
+        log(Logger.ERROR, throwable, withSingleFile, message, args);
     }
 
     public void e(boolean withSingleFile, String message, Object... args) {
-        log(TomLogger.ERROR, null, withSingleFile, message, args);
+        log(Logger.ERROR, null, withSingleFile, message, args);
     }
 
     public void e(String message, Object... args) {
-        log(TomLogger.ERROR, null, false, message, args, false);
+        log(Logger.ERROR, null, false, message, args, false);
     }
 
     public void e(Throwable throwable, boolean withSingleFile, String message, Object... args) {
-        log(TomLogger.ERROR, throwable, withSingleFile, message, args);
+        log(Logger.ERROR, throwable, withSingleFile, message, args);
     }
 
     public void w(String message, Object... args) {
-        log(TomLogger.WARN, null, false, message, args);
+        log(Logger.WARN, null, false, message, args);
     }
 
     public void i(String message, Object... args) {
-        log(TomLogger.INFO, null, false, message, args);
+        log(Logger.INFO, null, false, message, args);
     }
 
     public void v(String message, Object... args) {
-        log(TomLogger.VERBOSE, null, false, message, args);
+        log(Logger.VERBOSE, null, false, message, args);
     }
 
     public void wtf(String message, Object... args) {
-        log(TomLogger.ASSERT, null, false, message, args);
+        log(Logger.ASSERT, null, false, message, args);
     }
 
-    private void strategyLog(TomLogStrategy logStrategy, int priority, String message, boolean withSingleFile) {
+    private void strategyLog(LogStrategy logStrategy, int priority, String message, boolean withSingleFile) {
         if (logStrategy != null) {
             if (logStrategy.isLoggable(priority, logStrategy.tag)) {
                 logStrategy.log(priority, message, withSingleFile);
@@ -99,23 +126,22 @@ public class TomLogPrinter extends TomPrinter {
     public synchronized void log(int priority, String message, Throwable throwable, boolean withSingleFile) {
         String msg;
         if (throwable != null) {
-            if (!TomUtils.isEmpty(message)) {
-                msg = message + " : " + TomUtils.getStackTraceString(throwable);
+            if (!Utils.isEmpty(message)) {
+                msg = message + " : " + Utils.getStackTraceString(throwable);
             } else {
-                msg = TomUtils.getStackTraceString(throwable);
+                msg = Utils.getStackTraceString(throwable);
             }
         } else {
-            if (TomUtils.isEmpty(message)) {
+            if (Utils.isEmpty(message)) {
                 msg = "Empty/NULL log msg";
             } else {
                 msg = message;
             }
         }
 
-        TomLogStrategy logcatStrategy;
-
-        TomLogStrategy temporaryLogcatStrategy = getTemporaryLogcatStrategy();
-        TomLogStrategy defLogcatStrategy = getDefLogcatStrategy();
+        LogStrategy logcatStrategy;
+        LogStrategy temporaryLogcatStrategy = getTemporaryLogcatStrategy();
+        LogStrategy defLogcatStrategy = getDefLogcatStrategy();
         if (temporaryLogcatStrategy == null) {
             logcatStrategy = defLogcatStrategy;
         } else {
@@ -124,9 +150,9 @@ public class TomLogPrinter extends TomPrinter {
         setTemporaryLogcatStrategy(null);/*临时策略只发挥一次作用 , 用完即清空*/
         strategyLog(logcatStrategy, priority, msg, withSingleFile);
 
-        TomLogStrategy diskStrategy;
-        TomLogStrategy temporaryDiskStrategy = getTemporaryDiskStrategy();
-        TomLogStrategy defDiskStrategy = getDefDiskStrategy();
+        LogStrategy diskStrategy;
+        LogStrategy temporaryDiskStrategy = getTemporaryDiskStrategy();
+        LogStrategy defDiskStrategy = getDefDiskStrategy();
         if (temporaryDiskStrategy == null) {
             diskStrategy = defDiskStrategy;
         } else {
@@ -155,7 +181,7 @@ public class TomLogPrinter extends TomPrinter {
 
     private String createMessage(String message, Object... args) {
         if (message != null) {
-            if (TomUtils.isEmpty(args)) {
+            if (Utils.isEmpty(args)) {
                 return message;
             } else {
                 return String.format(message, args);
