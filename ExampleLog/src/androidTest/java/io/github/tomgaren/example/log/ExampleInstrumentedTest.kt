@@ -1,4 +1,4 @@
-package io.github.tomgaren.example.log
+package io.github.TomGarden.example.log
 
 //import androidx.test.platform.app.InstrumentationRegistry
 //import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ package io.github.tomgaren.example.log
 //    fun useAppContext() {
 //        // Context of the app under test.
 //        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-//        assertEquals("io.github.tomgaren.example.log", appContext.packageName)
+//        assertEquals("io.github.TomGarden.example.log", appContext.packageName)
 //    }
 //}

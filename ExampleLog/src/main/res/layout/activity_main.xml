@@ -12,14 +12,6 @@
         tools:context=".MainActivity">
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="Log 磁盘权限 , 手动授予下 , 否则本地日志无法打印" />
-
-
         <Button
             android:id="@+id/btnLiteLog"
             android:layout_width="match_parent"

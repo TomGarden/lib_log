@@ -4,12 +4,14 @@ plugins {
     //id 'maven'
 }
 
+def appId = "io.github.TomGarden.example.log"
+
 android {
     compileSdk project.compileSdk
 
 
     defaultConfig {
-        applicationId "io.github.tomgaren.example.log"
+        applicationId appId
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionCode 1
@@ -25,7 +27,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    namespace 'io.github.tomgaren.example.log'
+    namespace appId
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

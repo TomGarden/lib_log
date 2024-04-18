@@ -1,8 +1,9 @@
-package io.github.tomgaren.example.log
+package io.github.TomGarden.example.log
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import io.github.TomGarden.example.log.Constant.getAppDefLogPath
 import io.github.tomgarden.lib.lite_log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.lite_log.Logger
 
@@ -23,14 +24,14 @@ class LiteLogActivity : AppCompatActivity() {
 
         Logger.INSTANCE.defDiskStrategy = DiskLogTxtStrategy.Builder()
             .logFilePath {
-                val path = externalCacheDir?.path ?: Constant.defPath
+                val path = this.getAppDefLogPath()
                 return@logFilePath "${path}/liteLogDir"
             }
             .build()
 
 
         findViewById<View>(R.id.btnPrintLog).setOnClickListener {
-            io.github.tomgarden.lib.log.Logger.w("check local log file path >>: %s", Logger.INSTANCE.defDiskStrategyLogFilePath ?: "err")
+            Logger.INSTANCE.w("check local log file path >>: %s", Logger.INSTANCE.defDiskStrategyLogFilePath ?: "err")
             Logger.INSTANCE.e("errMessage")
             Logger.INSTANCE.tempJustMsg().e("TomLogger.INSTANCE.tempJustMsg().e")
             Logger.INSTANCE.tempLogcatMethodCount(0).tempLogcatShowThreadInfo(false)

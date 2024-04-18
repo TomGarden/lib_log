@@ -1,4 +1,4 @@
-package io.github.tomgaren.example.log
+package io.github.TomGarden.example.log
 
 import org.junit.Test
 

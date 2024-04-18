@@ -1,4 +1,4 @@
-package io.github.tomgaren.example.log
+package io.github.TomGarden.example.log
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.os.Process
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import io.github.TomGarden.example.log.Constant.getAppDefLogPath
 import io.github.tomgarden.lib.log.DiskLogTxtStrategy
 import io.github.tomgarden.lib.log.Logger
 import kotlinx.coroutines.GlobalScope
@@ -15,8 +16,6 @@ import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val getAppDefLogPath get()= externalCacheDir?.path ?: Constant.defPath
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val diskLogTxtStrategy =
             DiskLogTxtStrategy.newBuilder()
                 .tag(version)
-                .logFilePath { return@logFilePath "${getAppDefLogPath}/logDir" }
+                .logFilePath { return@logFilePath "${this.getAppDefLogPath()}/logDir" }
                 .build()
         Logger.setDefDiskStrategy(diskLogTxtStrategy)
         Logger.d(wantLogCatAndLogDisk)
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             DiskLogTxtStrategy
                 .newBuilder()
                 .tag(version)
-                .logFilePath { return@logFilePath "${getAppDefLogPath}/logDir" }
+                .logFilePath { return@logFilePath "${this.getAppDefLogPath()}/logDir" }
                 .build())
 
         findViewById<View>(R.id.btnPrintLog).setOnClickListener {
@@ -89,7 +88,6 @@ class MainActivity : AppCompatActivity() {
                 )
 
 
-
             //Logger.setDefDiskStrategy(DiskLogTxtStrategy.newBuilder().logFilePath {  })
             Logger.e("if we first init diskStrategy , this msg with locale log file")
             Logger.e(RuntimeException("sd"), true, "sdf")
@@ -110,17 +108,17 @@ class MainActivity : AppCompatActivity() {
                 delay(1000)
 
                 for (crashFile: File in Logger.getCrashLogFiles()) {
-                    System.out.println(Logger.readFile(crashFile.path))
+                    System.out.println("Logger.readFile(crashFile.path): "+Logger.readFile(crashFile.path))
                     crashFile.delete()
                 }
             }
 
-            System.out.println(Logger.getCrashLogFiles().size)
+            System.out.println("Logger.getCrashLogFiles().size: "+Logger.getCrashLogFiles().size)
 
-            for (crashFile: File in Logger.getCrashLogFiles()) {
-                System.out.println(Logger.readFile(crashFile.path))
-                crashFile.delete()
-            }
+            //for (crashFile: File in Logger.getCrashLogFiles()) {
+            //    System.out.println(Logger.readFile(crashFile.path))
+            //    crashFile.delete()
+            //}
         }
 
         findViewById<View>(R.id.btnCoroutinesPrintLog).setOnClickListener {
