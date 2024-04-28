@@ -264,7 +264,7 @@ internal object Utils {
         } catch (e: IOException) {
 
             Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
-                .e("UNKNOWN ERR 1", e)
+                .e("UNKNOWN ERR 1 : ${e.stackTraceToString()}")
 
             try {
                 bufWriter?.flush()
@@ -272,7 +272,7 @@ internal object Utils {
             } catch (e1: IOException) {
                 /* fail silently */
                 Logger.setTempLogcatStrategy(LogcatLogStrategy.newBuilder().build())
-                    .e("UNKNOWN ERR 2", e1)
+                    .e("UNKNOWN ERR 2 : ${e1.stackTraceToString()}")
             }
         }
     }

@@ -22,12 +22,12 @@ class LiteLogActivity : AppCompatActivity() {
 
 
 
-        Logger.INSTANCE.defDiskStrategy = DiskLogTxtStrategy.Builder()
-            .logFilePath {
-                val path = this.getAppDefLogPath()
-                return@logFilePath "${path}/liteLogDir"
-            }
-            .build()
+//        Logger.INSTANCE.defDiskStrategy = DiskLogTxtStrategy.Builder()
+//            .logFilePath {
+//                val path = this.getAppDefLogPath()
+//                return@logFilePath "${path}/liteLogDir"
+//            }
+//            .build()
 
 
         findViewById<View>(R.id.btnPrintLog).setOnClickListener {
