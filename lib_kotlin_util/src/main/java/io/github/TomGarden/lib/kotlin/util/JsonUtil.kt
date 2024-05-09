@@ -19,10 +19,11 @@ object JsonUtil {
             return clazz?.getAnnotation(Expose::class.java)?.serialize == false
         }
     }
+
+    /* 类型忽略条件
+    *  存在 @Expose 注解 && Expose.deserialize == false
+    *  */
     private val deserializeExclusionStrategy = object : ExclusionStrategy {
-        /* 类型忽略条件
-        *  存在 @Expose 注解 && Expose.deserialize == false
-        *  */
         override fun shouldSkipField(fieldAttr: FieldAttributes?): Boolean {
             return fieldAttr?.getAnnotation(Expose::class.java)?.deserialize == false
         }
