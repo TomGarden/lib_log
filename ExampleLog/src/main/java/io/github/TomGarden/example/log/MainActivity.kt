@@ -233,9 +233,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<View>(R.id.btnLiteLog).setOnClickListener {
-            startActivity(Intent(this, LiteLogActivity::class.java))
-        }
 
         findViewById<View>(R.id.btn_auto_collapse).setOnClickListener {
             val string = "F\nF\nF\nF\n"

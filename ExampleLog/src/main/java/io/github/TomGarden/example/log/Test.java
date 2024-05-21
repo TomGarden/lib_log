@@ -1,6 +1,5 @@
 package io.github.TomGarden.example.log;
 
-import io.github.tomgarden.lib.lite_log.Logger;
 
 /**
  * describe :
@@ -9,7 +8,4 @@ import io.github.tomgarden.lib.lite_log.Logger;
  * github : https://github.com/TomGarden
  */
 public class Test {
-    public void test() {
-        Logger.INSTANCE.i("msg");
-    }
 }

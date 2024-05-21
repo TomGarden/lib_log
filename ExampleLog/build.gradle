@@ -50,7 +50,7 @@ dependencies {
     implementation project(path: ':LibLog')
     //implementation 'com.github.TomGarden:lib_log:v0.1.33'
     //implementation 'com.github.Tomgarden:lib_log:v0.1.33'
-    implementation project(path: ':LibLiteLog')
+    //implementation project(path: ':LibLiteLog')
     //implementation 'io.github.tomgarden:lib_log:0.1.22'
     //implementation 'io.github.tomgarden:lib_log:0.1.13'
 }
